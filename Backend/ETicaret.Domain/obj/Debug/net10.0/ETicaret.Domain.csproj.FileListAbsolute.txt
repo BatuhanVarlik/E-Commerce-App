@@ -1,0 +1,12 @@
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.AssemblyInfoInputs.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.AssemblyInfo.cs
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.csproj.CoreCompileInputs.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/bin/Debug/net10.0/ETicaret.Domain.deps.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/bin/Debug/net10.0/ETicaret.Domain.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/bin/Debug/net10.0/ETicaret.Domain.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.csproj.AssemblyReference.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/refint/ETicaret.Domain.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ETicaret.Domain.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Domain/obj/Debug/net10.0/ref/ETicaret.Domain.dll

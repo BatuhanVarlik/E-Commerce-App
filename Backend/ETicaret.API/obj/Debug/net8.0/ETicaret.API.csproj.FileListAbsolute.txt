@@ -1,0 +1,290 @@
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/appsettings.Development.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/appsettings.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.staticwebassets.endpoints.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.deps.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.runtimeconfig.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Humanizer.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.Workspaces.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.OpenApi.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Mono.TextTemplating.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Npgsql.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/StackExchange.Redis.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.CodeDom.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.AttributedModel.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.Convention.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.Hosting.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.Runtime.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.TypedParts.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Diagnostics.DiagnosticSource.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Application.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Domain.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Infrastructure.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Application.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Infrastructure.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Domain.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.csproj.AssemblyReference.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rpswa.dswa.cache.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.GeneratedMSBuildEditorConfig.editorconfig
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.AssemblyInfoInputs.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.AssemblyInfo.cs
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.csproj.CoreCompileInputs.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.MvcApplicationPartsAssemblyInfo.cs
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.MvcApplicationPartsAssemblyInfo.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rjimswa.dswa.cache.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rjsmrazor.dswa.cache.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/scopedcss/bundle/ETicaret.API.styles.css
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.build.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.build.json.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.development.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.build.endpoints.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/swae.build.ex.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.DE5079AB.Up2Date
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/refint/ETicaret.API.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.genruntimeconfig.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ref/ETicaret.API.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Iyzipay.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/appsettings.Development.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/appsettings.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.staticwebassets.endpoints.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.deps.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.runtimeconfig.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.pdb
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Humanizer.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Iyzipay.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.AspNetCore.OpenApi.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.CodeAnalysis.Workspaces.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Design.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.DependencyModel.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Identity.Core.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Identity.Stores.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Logging.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.Extensions.Primitives.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Microsoft.OpenApi.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Mono.TextTemplating.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Npgsql.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Pipelines.Sockets.Unofficial.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/StackExchange.Redis.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.CodeDom.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.AttributedModel.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.Convention.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.Hosting.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.Runtime.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Composition.TypedParts.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Diagnostics.DiagnosticSource.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Application.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Domain.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Infrastructure.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Application.pdb
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Infrastructure.pdb
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.Domain.pdb
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.csproj.AssemblyReference.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rpswa.dswa.cache.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.GeneratedMSBuildEditorConfig.editorconfig
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.AssemblyInfoInputs.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.AssemblyInfo.cs
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.csproj.CoreCompileInputs.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.MvcApplicationPartsAssemblyInfo.cs
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.MvcApplicationPartsAssemblyInfo.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rjimswa.dswa.cache.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rjsmrazor.dswa.cache.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/scopedcss/bundle/ETicaret.API.styles.css
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.build.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.build.json.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.development.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/staticwebassets.build.endpoints.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/swae.build.ex.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.DE5079AB.Up2Date
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/refint/ETicaret.API.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.pdb
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.genruntimeconfig.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ref/ETicaret.API.dll

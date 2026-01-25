@@ -1,0 +1,15 @@
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/bin/Debug/net10.0/ETicaret.Application.deps.json
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/bin/Debug/net10.0/ETicaret.Application.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/bin/Debug/net10.0/ETicaret.Application.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/bin/Debug/net10.0/ETicaret.Domain.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/bin/Debug/net10.0/ETicaret.Domain.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.csproj.AssemblyReference.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.GeneratedMSBuildEditorConfig.editorconfig
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.AssemblyInfoInputs.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.AssemblyInfo.cs
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.csproj.CoreCompileInputs.cache
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.85B2E7EA.Up2Date
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/refint/ETicaret.Application.dll
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ETicaret.Application.pdb
+/Users/batu/Desktop/E-ticaret/Backend/ETicaret.Application/obj/Debug/net10.0/ref/ETicaret.Application.dll
