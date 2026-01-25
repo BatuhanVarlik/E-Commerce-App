@@ -36,3 +36,4 @@
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.pdb
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.genruntimeconfig.cache
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ref/ETicaret.Infrastructure.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.sourcelink.json

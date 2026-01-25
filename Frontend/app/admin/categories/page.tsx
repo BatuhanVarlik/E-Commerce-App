@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 interface Category {
   id: string;
@@ -61,7 +61,7 @@ export default function AdminCategoriesPage() {
       setSubCategoryId("");
       setSubSubCategoryId("");
       fetchCategories();
-    } catch (error) {
+    } catch {
       alert("Kategori oluşturulamadı.");
     }
   };
@@ -82,7 +82,7 @@ export default function AdminCategoriesPage() {
       );
       setDeletingCategory(null);
       fetchCategories();
-    } catch (error) {
+    } catch {
       alert("Kategori silinemedi.");
     }
   };
@@ -106,7 +106,7 @@ export default function AdminCategoriesPage() {
       setEditingCategory(null);
       setEditName("");
       fetchCategories();
-    } catch (error) {
+    } catch {
       alert("Kategori güncellenemedi.");
     }
   };

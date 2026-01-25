@@ -28,3 +28,4 @@
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/obj/Debug/net8.0/refint/ETicaret.Application.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/obj/Debug/net8.0/ETicaret.Application.pdb
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/obj/Debug/net8.0/ref/ETicaret.Application.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/obj/Debug/net8.0/ETicaret.Application.sourcelink.json

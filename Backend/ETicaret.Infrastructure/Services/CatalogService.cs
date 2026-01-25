@@ -171,6 +171,104 @@ public class CatalogService : ICatalogService
         return products.Select(MapProductToDto);
     }
 
+    public async Task<FilteredProductsResponseDto> GetFilteredProductsAsync(ProductFilterDto filter)
+    {
+        var query = _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.Brand)
+            .AsQueryable();
+
+        // Arama
+        if (!string.IsNullOrWhiteSpace(filter.SearchQuery))
+        {
+            var searchLower = filter.SearchQuery.ToLower();
+            query = query.Where(p => 
+                p.Name.ToLower().Contains(searchLower) || 
+                p.Description.ToLower().Contains(searchLower));
+        }
+
+        // Kategori filtresi (alt kategoriler dahil)
+        if (filter.CategoryId.HasValue)
+        {
+            var categoriesForFilter = await _context.Categories.ToListAsync();
+            var categoryIds = GetCategoryIdsWithChildren(categoriesForFilter, filter.CategoryId.Value);
+            query = query.Where(p => categoryIds.Contains(p.CategoryId));
+        }
+
+        // Marka filtresi
+        if (filter.BrandId.HasValue)
+        {
+            query = query.Where(p => p.BrandId == filter.BrandId.Value);
+        }
+
+        // Fiyat aralığı
+        if (filter.MinPrice.HasValue)
+        {
+            query = query.Where(p => p.Price >= filter.MinPrice.Value);
+        }
+        if (filter.MaxPrice.HasValue)
+        {
+            query = query.Where(p => p.Price <= filter.MaxPrice.Value);
+        }
+
+        // Stok durumu
+        if (filter.InStock.HasValue && filter.InStock.Value)
+        {
+            query = query.Where(p => p.Stock > 0);
+        }
+
+        // Sıralama
+        query = filter.SortBy switch
+        {
+            "price_asc" => query.OrderBy(p => p.Price),
+            "price_desc" => query.OrderByDescending(p => p.Price),
+            "name_asc" => query.OrderBy(p => p.Name),
+            "name_desc" => query.OrderByDescending(p => p.Name),
+            "newest" => query.OrderByDescending(p => p.CreatedAt),
+            _ => query.OrderBy(p => p.Name)
+        };
+
+        // Toplam sayı
+        var totalCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize);
+
+        // Sayfalama
+        var products = await query
+            .Skip((filter.Page - 1) * filter.PageSize)
+            .Take(filter.PageSize)
+            .ToListAsync();
+
+        // Filtre seçenekleri - tüm kategorileri hiyerarşik olarak getir
+        var allProducts = await _context.Products.ToListAsync();
+        
+        // Tüm kategorileri çek
+        var allCategories = await _context.Categories.ToListAsync();
+        
+        var filterOptions = new FilterOptionsDto
+        {
+            MinPrice = allProducts.Any() ? allProducts.Min(p => p.Price) : 0,
+            MaxPrice = allProducts.Any() ? allProducts.Max(p => p.Price) : 0,
+            Brands = await _context.Brands
+                .Select(b => new BrandOptionDto
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    ProductCount = _context.Products.Count(p => p.BrandId == b.Id)
+                })
+                .ToListAsync(),
+            Categories = BuildHierarchicalCategories(allCategories, allProducts)
+        };
+
+        return new FilteredProductsResponseDto
+        {
+            Products = products.Select(MapProductToDto),
+            TotalCount = totalCount,
+            TotalPages = totalPages,
+            CurrentPage = filter.Page,
+            FilterOptions = filterOptions
+        };
+    }
+
     public async Task UpdateProductAsync(Guid id, CreateProductDto dto)
     {
         var product = await _context.Products.FindAsync(id);
@@ -220,5 +318,40 @@ public class CatalogService : ICatalogService
     private string GenerateSlug(string name)
     {
         return name.ToLower().Replace(" ", "-").Replace("ç", "c").Replace("ğ", "g").Replace("ı", "i").Replace("ö", "o").Replace("ş", "s").Replace("ü", "u");
+    }
+
+    private List<CategoryOptionDto> BuildHierarchicalCategories(List<Category> allCategories, List<Product> allProducts, Guid? parentId = null)
+    {
+        var categories = allCategories
+            .Where(c => c.ParentId == parentId)
+            .Select(c => new CategoryOptionDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ProductCount = GetCategoryProductCount(allCategories, allProducts, c.Id),
+                SubCategories = BuildHierarchicalCategories(allCategories, allProducts, c.Id)
+            })
+            .ToList();
+
+        return categories;
+    }
+
+    private List<Guid> GetCategoryIdsWithChildren(List<Category> allCategories, Guid categoryId)
+    {
+        var ids = new List<Guid> { categoryId };
+        var children = allCategories.Where(c => c.ParentId == categoryId).ToList();
+        
+        foreach (var child in children)
+        {
+            ids.AddRange(GetCategoryIdsWithChildren(allCategories, child.Id));
+        }
+        
+        return ids;
+    }
+
+    private int GetCategoryProductCount(List<Category> allCategories, List<Product> allProducts, Guid categoryId)
+    {
+        var categoryIds = GetCategoryIdsWithChildren(allCategories, categoryId);
+        return allProducts.Count(p => categoryIds.Contains(p.CategoryId));
     }
 }

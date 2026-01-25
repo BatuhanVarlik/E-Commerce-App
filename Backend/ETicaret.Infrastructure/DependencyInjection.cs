@@ -14,7 +14,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        // .env değişkenlerinden connection string al
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? $"Host={Environment.GetEnvironmentVariable("DB_HOST")};Port={Environment.GetEnvironmentVariable("DB_PORT")};Database={Environment.GetEnvironmentVariable("DB_NAME")};Username={Environment.GetEnvironmentVariable("DB_USER")};Password={Environment.GetEnvironmentVariable("DB_PASSWORD")}";
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
@@ -37,12 +39,15 @@ public static class DependencyInjection
         services.AddScoped<IPaymentService, Services.PaymentService>();
         services.AddScoped<IOrderService, Services.OrderService>();
         services.AddScoped<IDashboardService, Services.DashboardService>();
+        services.AddScoped<IReviewService, Services.ReviewService>();
         services.AddTransient<Services.DataSeeder>();
 
         // Redis Configuration
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
-            var config = configuration.GetConnectionString("Redis") ?? "localhost:6379";
+            var config = configuration.GetConnectionString("Redis") 
+                ?? Environment.GetEnvironmentVariable("REDIS_CONNECTION") 
+                ?? "localhost:6379";
             return ConnectionMultiplexer.Connect(config);
         });
 

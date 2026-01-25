@@ -26,7 +26,7 @@ export default function LoginPage() {
         {
           email,
           password,
-        }
+        },
       );
 
       // Use Context to login
@@ -118,6 +118,15 @@ export default function LoginPage() {
               className="w-full rounded border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
               required
             />
+          </div>
+
+          <div className="text-right">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Şifremi Unuttum?
+            </Link>
           </div>
 
           <button

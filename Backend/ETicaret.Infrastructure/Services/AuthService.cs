@@ -1,11 +1,14 @@
 using ETicaret.Application.DTOs.Auth;
 using ETicaret.Application.Interfaces;
 using ETicaret.Domain.Entities;
+using ETicaret.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ETicaret.Infrastructure.Services;
@@ -15,12 +18,18 @@ public class AuthService : IAuthService
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     private readonly IConfiguration _configuration;
+    private readonly ApplicationDbContext _context;
 
-    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
+    public AuthService(
+        UserManager<User> userManager, 
+        SignInManager<User> signInManager, 
+        IConfiguration configuration,
+        ApplicationDbContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
+        _context = context;
     }
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
@@ -116,5 +125,92 @@ public class AuthService : IAuthService
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
+    }
+
+    public async Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordRequest request)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null)
+        {
+            // Güvenlik için kullanıcı bulunamasa bile başarılı mesaj döndür
+            return new ForgotPasswordResponse
+            {
+                Success = true,
+                Message = "Eğer bu e-posta adresi sistemimizde kayıtlıysa, şifre sıfırlama bağlantısı gönderilecektir."
+            };
+        }
+
+        // Daha önce kullanılmamış token'ları pasif yap
+        var oldTokens = await _context.PasswordResets
+            .Where(pr => pr.UserId == user.Id && !pr.IsUsed)
+            .ToListAsync();
+        
+        foreach (var oldToken in oldTokens)
+        {
+            oldToken.IsUsed = true;
+        }
+
+        // Yeni token oluştur
+        var resetToken = GenerateSecureToken();
+        var passwordReset = new PasswordReset
+        {
+            UserId = user.Id,
+            Token = resetToken,
+            ExpiresAt = DateTime.UtcNow.AddHours(1), // 1 saat geçerli
+            IsUsed = false,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        _context.PasswordResets.Add(passwordReset);
+        await _context.SaveChangesAsync();
+
+        // Production'da burada email gönderilir
+        // Şimdilik token'ı response'da döndürüyoruz (development için)
+        
+        return new ForgotPasswordResponse
+        {
+            Success = true,
+            Message = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.",
+            ResetToken = resetToken // Development aşamasında göster, production'da kaldır!
+        };
+    }
+
+    public async Task<bool> ResetPasswordAsync(ResetPasswordRequest request)
+    {
+        var passwordReset = await _context.PasswordResets
+            .Include(pr => pr.User)
+            .FirstOrDefaultAsync(pr => pr.Token == request.Token && !pr.IsUsed);
+
+        if (passwordReset == null)
+            throw new Exception("Geçersiz veya kullanılmış token.");
+
+        if (passwordReset.ExpiresAt < DateTime.UtcNow)
+            throw new Exception("Token'ın süresi dolmuş. Lütfen yeni bir şifre sıfırlama talebi oluşturun.");
+
+        var user = passwordReset.User;
+        
+        // Şifreyi sıfırla
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _userManager.ResetPasswordAsync(user, resetToken, request.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new Exception($"Şifre sıfırlama başarısız: {errors}");
+        }
+
+        // Token'ı kullanılmış olarak işaretle
+        passwordReset.IsUsed = true;
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    private string GenerateSecureToken()
+    {
+        var randomBytes = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        return Convert.ToBase64String(randomBytes).Replace("+", "-").Replace("/", "_").Replace("=", "");
     }
 }

@@ -37,6 +37,13 @@ public class ProductsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("filter")]
+    public async Task<IActionResult> GetFiltered([FromQuery] ProductFilterDto filter)
+    {
+        var result = await _catalogService.GetFilteredProductsAsync(filter);
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {

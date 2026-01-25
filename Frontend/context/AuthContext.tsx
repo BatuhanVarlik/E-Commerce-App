@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { cookieStorage } from "@/lib/cookieStorage";
 
 interface User {
   token: string;
@@ -24,31 +25,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Check local storage on initial load
-    const storedUser = localStorage.getItem("user");
+    // Cookie'den kullanıcı bilgilerini yükle
+    const storedUser = cookieStorage.getUser();
     if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("Failed to parse user data", error);
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-      }
+      setUser(storedUser);
     }
   }, []);
 
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", userData.token);
+    // Token'ı cookie'ye kaydet (7 gün geçerli)
+    cookieStorage.setToken(userData.token, 7);
+    // Kullanıcı bilgilerini cookie'ye kaydet
+    cookieStorage.setUser(userData, 7);
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    router.push("/login"); // Redirect to login after logout
+    // Tüm auth cookie'lerini temizle
+    cookieStorage.clearAuth();
+    router.push("/login");
   };
 
   return (
