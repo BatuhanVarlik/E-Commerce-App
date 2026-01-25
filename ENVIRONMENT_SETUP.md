@@ -5,12 +5,14 @@ Bu proje hassas verileri (API anahtarları, veritabanı şifreleri, JWT secret'l
 ## Backend Kurulumu
 
 1. `Backend` klasöründe `.env.example` dosyasını `.env` olarak kopyalayın:
+
    ```bash
    cd Backend
    cp .env.example .env
    ```
 
 2. `.env` dosyasını açın ve gerçek değerlerinizi girin:
+
    ```env
    # Database Configuration
    DB_HOST=127.0.0.1
@@ -18,16 +20,16 @@ Bu proje hassas verileri (API anahtarları, veritabanı şifreleri, JWT secret'l
    DB_NAME=eticaret_db
    DB_USER=admin
    DB_PASSWORD=your_strong_password
-   
+
    # Redis Configuration
    REDIS_CONNECTION=localhost:6379
-   
+
    # JWT Configuration
    JWT_SECRET_KEY=your_very_long_and_secure_secret_key_here
    JWT_ISSUER=ETicaretAPI
    JWT_AUDIENCE=ETicaretClient
    JWT_DURATION_MINUTES=60
-   
+
    # Iyzico Payment Gateway (Sandbox)
    IYZICO_API_KEY=your_iyzico_api_key
    IYZICO_SECRET_KEY=your_iyzico_secret_key
@@ -39,12 +41,14 @@ Bu proje hassas verileri (API anahtarları, veritabanı şifreleri, JWT secret'l
 ## Frontend Kurulumu
 
 1. `Frontend` klasöründe `.env.example` dosyasını `.env.local` olarak kopyalayın:
+
    ```bash
    cd Frontend
    cp .env.example .env.local
    ```
 
 2. `.env.local` dosyasını açın ve API URL'inizi ayarlayın:
+
    ```env
    NEXT_PUBLIC_API_URL=http://localhost:5162
    NODE_ENV=development
@@ -63,6 +67,7 @@ Bu proje hassas verileri (API anahtarları, veritabanı şifreleri, JWT secret'l
 ## Değişken Açıklamaları
 
 ### Backend
+
 - `DB_HOST`: PostgreSQL veritabanı sunucu adresi
 - `DB_PORT`: PostgreSQL port numarası (varsayılan: 5432)
 - `DB_NAME`: Veritabanı adı
@@ -78,18 +83,21 @@ Bu proje hassas verileri (API anahtarları, veritabanı şifreleri, JWT secret'l
 - `IYZICO_BASE_URL`: Iyzico API URL'i (sandbox veya production)
 
 ### Frontend
+
 - `NEXT_PUBLIC_API_URL`: Backend API'nin base URL'i
 - `NODE_ENV`: Ortam (development/production)
 
 ## Kontrol
 
 Backend'in .env dosyasını doğru okuduğunu kontrol etmek için:
+
 ```bash
 cd Backend/ETicaret.API
 dotnet run
 ```
 
 Frontend'in environment variable'ları doğru okuduğunu kontrol etmek için:
+
 ```bash
 cd Frontend
 npm run dev

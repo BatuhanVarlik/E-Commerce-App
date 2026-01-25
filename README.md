@@ -20,6 +20,35 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Environment Variables & Setup 🔒
+
+This repository stores sensitive configuration in environment variables. See `ENVIRONMENT_SETUP.md` for full, step-by-step instructions.
+
+Quick setup (summary):
+
+- **Backend** (development): copy and configure the template
+
+```bash
+cd Backend
+cp .env.example .env
+# Edit Backend/.env and add your DB/JWT/Redis/Iyzico values
+```
+
+- **Frontend** (development): copy and configure the template
+
+```bash
+cd Frontend
+cp .env.example .env.local
+# Edit Frontend/.env.local and set NEXT_PUBLIC_API_URL
+```
+
+- **Important**:
+  - **Do not commit** `.env` or `.env.local` files — they are ignored by `.gitignore`.
+  - Commit **only** `.env.example` as a template for other developers.
+  - If secrets were committed earlier, remove them from git history immediately.
+
+> ⚠️ Security tip: Use strong, unique values for `JWT_SECRET_KEY` and database passwords. Keep production secrets in your deployment platform's secret manager.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

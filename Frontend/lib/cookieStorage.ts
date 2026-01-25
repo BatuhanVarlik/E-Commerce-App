@@ -55,7 +55,7 @@ export const cookieStorage = {
   set: (
     key: string,
     value: string | number | boolean | object,
-    options?: Cookies.CookieAttributes
+    options?: Cookies.CookieAttributes,
   ) => {
     const stringValue =
       typeof value === "string" ? value : JSON.stringify(value);
