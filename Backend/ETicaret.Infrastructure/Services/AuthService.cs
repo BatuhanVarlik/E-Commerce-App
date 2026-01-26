@@ -206,14 +206,20 @@ public class AuthService : IAuthService
 
         var user = passwordReset.User;
         
-        // Şifreyi sıfırla
-        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var result = await _userManager.ResetPasswordAsync(user, resetToken, request.NewPassword);
-
-        if (!result.Succeeded)
+        // UserManager ile şifreyi güncelle (best practice)
+        // RemovePasswordAsync + AddPasswordAsync kullanarak eski şifreyi kaldırıp yenisini ekliyoruz
+        var removeResult = await _userManager.RemovePasswordAsync(user);
+        if (!removeResult.Succeeded)
         {
-            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            throw new Exception($"Şifre sıfırlama başarısız: {errors}");
+            var errors = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+            throw new Exception($"Eski şifre kaldırılamadı: {errors}");
+        }
+
+        var addResult = await _userManager.AddPasswordAsync(user, request.NewPassword);
+        if (!addResult.Succeeded)
+        {
+            var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
+            throw new Exception($"Yeni şifre eklenemedi: {errors}");
         }
 
         // Token'ı kullanılmış olarak işaretle

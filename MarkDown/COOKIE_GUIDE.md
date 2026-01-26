@@ -1,6 +1,6 @@
 # Cookie Kullanım Kılavuzu
 
-Bu projede cookie yönetimi için `js-cookie` kütüphanesi kullanılmaktadır.
+Bu projede cookie yönetimi için `js-cookie` kütüphanesi kullanılmaktadır. Aşağıda mevcut uygulamanın nasıl çalıştığı, güvenlik değerlendirmesi ve production için önerilen değişiklikler yer alıyor.
 
 ## 📦 Kurulum
 
@@ -8,93 +8,41 @@ Bu projede cookie yönetimi için `js-cookie` kütüphanesi kullanılmaktadır.
 npm install js-cookie @types/js-cookie
 ```
 
-## 🔧 Kullanım
+## 🔧 Mevcut Uygulama (Ne yapıyor?)
 
-### 1. **cookieStorage Helper** (`lib/cookieStorage.ts`)
+- Frontend `lib/cookieStorage.ts` içinde bir yardımcı (helper) bulunmaktadır. Bu helper, token (`auth_token`) ve kullanıcı verisini (`user_data`) client-side cookie olarak yönetir.
+- API istekleri `lib/api.ts` içinde oluşturulan Axios `api` instance'ına yapılır. Bu instance'ın request interceptor'ı her istekte `cookieStorage.getToken()` ile token'ı okuyup `Authorization: Bearer <token>` header'ına ekler.
 
-Tüm cookie işlemleri için merkezi helper:
-
-```typescript
-import { cookieStorage } from "@/lib/cookieStorage";
-
-// Token kaydet (7 gün geçerli)
-cookieStorage.setToken("your-jwt-token", 7);
-
-// Token oku
-const token = cookieStorage.getToken();
-
-// Token sil
-cookieStorage.removeToken();
-
-// Kullanıcı bilgisi kaydet
-cookieStorage.setUser({ name: "John", email: "john@example.com" });
-
-// Kullanıcı bilgisi oku
-const user = cookieStorage.getUser();
-
-// Tüm auth cookie'lerini temizle
-cookieStorage.clearAuth();
-
-// Genel cookie işlemleri
-cookieStorage.set("key", "value", { expires: 30 });
-const value = cookieStorage.get("key");
-cookieStorage.remove("key");
-```
-
-### 2. **API Client** (`lib/api.ts`)
-
-Otomatik token ekleme ve error handling:
+Kısa örnekler:
 
 ```typescript
-import { authApi, productsApi } from "@/lib/api";
+// cookieStorage (örnek)
+cookieStorage.setToken("your-jwt-token", 7); // token'ı cookie'ye kaydeder (7 gün)
+const token = cookieStorage.getToken(); // cookie'den token okur
+cookieStorage.clearAuth(); // token + user verisini siler
 
-// Login
-const response = await authApi.login("email@example.com", "password");
-
-// Ürünleri getir (otomatik token eklenir)
-const products = await productsApi.getAll();
-
-// Ürün oluştur (admin - otomatik token eklenir)
-const newProduct = await productsApi.create(productData);
+// api.ts (ön işlemci)
+api.interceptors.request.use((config) => {
+  const token = cookieStorage.getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 ```
 
-### 3. **AuthContext Entegrasyonu**
+## 🛡️ Güvenlik Değerlendirmesi
 
-AuthContext artık cookie kullanıyor:
+- Mevcut: Client-side cookie (js-cookie) ile token saklanıyor.
+  - ✅ SameSite: 'strict' kullanılıyor (CSRF riskini azaltır).
+  - ✅ `secure` flag production'da etkinleştiriliyor (HTTPS gerektirir).
+  - ❌ Ancak JavaScript erişimi mümkün olduğundan XSS riskine açıktır. Eğer sayfada XSS zaafiyeti olursa token çalınabilir.
 
-```typescript
-import { useAuth } from "@/context/AuthContext";
+- Önerilen (daha güvenli): HTTP-only cookie ile token kaydetmek. Bu sayede JavaScript üzerinden okunamaz (XSS riskini minimize eder). Ancak HTTP-only cookie'ler CSRF riskini tekrar gündeme getirir; bu nedenle:
+  - Use SameSite=strict or Lax (depending on your need)
+  - Consider adding CSRF tokens for state-changing requests (POST/PUT/DELETE) or use double-submit cookie pattern
 
-function MyComponent() {
-  const { user, login, logout } = useAuth();
+## ✅ Production için Önerilen Akış (Örnekler & Kod)
 
-  // Login (otomatik cookie'ye kaydeder)
-  const handleLogin = async () => {
-    const response = await authApi.login(email, password);
-    login(response.data); // Cookie'ye kaydedilir
-  };
-
-  // Logout (cookie'leri temizler)
-  const handleLogout = () => {
-    logout();
-  };
-}
-```
-
-## 🛡️ Güvenlik Özellikleri
-
-### Client-Side Cookies (Mevcut)
-
-- ✅ Otomatik expire (7 gün)
-- ✅ SameSite: 'strict' (CSRF koruması)
-- ✅ Secure flag (Production'da HTTPS only)
-- ❌ JavaScript'ten erişilebilir (XSS riski var)
-
-### HTTP-Only Cookies (Önerilen - Production için)
-
-Daha güvenli bir yaklaşım için backend'den HTTP-only cookie ayarlayın:
-
-**Backend (C#) Örneği:**
+1. Backend login endpoint'i JWT üretip HTTP-only cookie olarak gönderir:
 
 ```csharp
 [HttpPost("login")]
@@ -102,11 +50,10 @@ public async Task<IActionResult> Login([FromBody] LoginRequest request)
 {
     var result = await _authService.LoginAsync(request);
 
-    // HTTP-only cookie ayarla
     Response.Cookies.Append("auth_token", result.Token, new CookieOptions
     {
-        HttpOnly = true,  // JavaScript erişemez (XSS koruması)
-        Secure = true,    // Sadece HTTPS
+        HttpOnly = true, // JavaScript erişemez
+        Secure = true,   // Sadece HTTPS (production)
         SameSite = SameSiteMode.Strict,
         Expires = DateTimeOffset.UtcNow.AddDays(7)
     });
@@ -115,113 +62,92 @@ public async Task<IActionResult> Login([FromBody] LoginRequest request)
 }
 ```
 
-**Frontend Axios Config:**
+2. Frontend Axios: cookie'leri otomatik gönderecek şekilde yapılandırın:
 
 ```typescript
-api.defaults.withCredentials = true; // Cookie'leri otomatik gönder
+// lib/api.ts
+authApi.defaults.withCredentials = true;
+api.defaults.withCredentials = true; // HTTP-only cookie'lerin gönderilmesi için (CORS ayarları ile uyumlu olmalı)
 ```
 
-## 📝 Cookie vs LocalStorage vs SessionStorage
+3. Backend: CORS ve cookie okuma
 
-| Özellik             | Cookie             | LocalStorage     | SessionStorage  |
-| ------------------- | ------------------ | ---------------- | --------------- |
-| Kapasite            | ~4KB               | ~5-10MB          | ~5-10MB         |
-| Expire              | Ayarlanabilir      | Manuel temizleme | Sekme kapanınca |
-| HTTP ile gönderilir | ✅ Evet            | ❌ Hayır         | ❌ Hayır        |
-| XSS koruması        | ✅ (HTTP-only ile) | ❌ Hayır         | ❌ Hayır        |
-| CSRF koruması       | ⚠️ Token gerekli   | ✅ Otomatik      | ✅ Otomatik     |
+- CORS policy'nizde credentials'a izin verin ve origin'i açıkça belirtin:
 
-## 🎯 Ne Zaman Hangisini Kullanmalı?
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowCredentials()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
-### Cookie Kullan:
+app.UseCors("DevCors");
+```
 
-- ✅ Authentication token (özellikle HTTP-only ile)
-- ✅ Kullanıcı tercihleri (theme, language)
-- ✅ Shopping cart (sepet)
-- ✅ Session tracking
+- JWT middleware'ini cookie'den token okumak üzere genişletebilirsiniz (ör. JwtBearer `OnMessageReceived`):
 
-### LocalStorage Kullan:
+```csharp
+.AddJwtBearer(options =>
+{
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            if (context.Request.Cookies.ContainsKey("auth_token"))
+            {
+                context.Token = context.Request.Cookies["auth_token"];
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
+```
 
-- ✅ Offline data caching
-- ✅ Büyük JSON verileri
-- ✅ User preferences (non-sensitive)
+4. CSRF önlemleri
 
-### SessionStorage Kullan:
+- `SameSite=strict`/`lax` ile büyük ölçüde koruma sağlanır.
+- Çok kritik işlemler için CSRF token (double submit) veya custom header kontrolü ekleyin.
 
-- ✅ Form draft'ları
-- ✅ Geçici wizard/stepper verileri
-- ✅ Single-session data
+## 🧭 Geçiş Adımları (Checklist)
 
-## 🔍 Debug ve İnceleme
+- [ ] Backend: Login endpoint'i HTTP-only cookie eklesin
+- [ ] Backend: JwtBearer olayına cookie üzerinden token alma desteği ekleyin
+- [ ] Backend: CORS policy `AllowCredentials()` ile güncellensin ve origin'ler açıkça tanımlansın
+- [ ] Frontend: `api.defaults.withCredentials = true` ayarlansın
+- [ ] Frontend: `cookieStorage` helper'ını auth için read-only (HTTP-only) fallback ile güncelleyin (optional)
+- [ ] Test: Login, token renewal, logout akışlarını test edin
 
-**Chrome DevTools:**
+## 🔍 Debug & İnceleme
 
-1. F12 → Application → Cookies
-2. Tüm cookie'leri görebilirsiniz
+**Güncel (Client-side cookie) debug:**
 
-**Console'da Test:**
+1. F12 → Application → Cookies → `auth_token`, `user_data` kontrol edin
+2. Console:
 
 ```javascript
-// Tüm cookie'leri göster
-document.cookie;
-
-// Cookie'leri kontrol et
 import { cookieStorage } from "@/lib/cookieStorage";
-console.log(cookieStorage.getAll());
+console.log(cookieStorage.getToken());
+console.log(cookieStorage.getUser());
 ```
 
-## 🚀 Kullanım Örnekleri
+**HTTP-only cookie ile debug:**
 
-### Sepet Verisi Cookie'de Sakla
+- HTTP-only cookie JavaScript tarafından okunamaz (`cookieStorage.getToken()` boş döner). Sunucuya gelen isteklerde oturum doğrulama yapılıyorsa cookie devreye girer.
+- Network tab: request headers/cookies sekmesinde cookie'lerin gönderilip gönderilmediğini kontrol edin (withCredentials=true olmalı).
 
-```typescript
-import { cookieStorage } from "@/lib/cookieStorage";
+## 🔁 Mevcut Kod Parçacıkları (Referans)
 
-// Sepeti kaydet (30 gün)
-cookieStorage.set("cart", cartItems, { expires: 30 });
+- `lib/cookieStorage.ts` — token ve user verisini client-side cookie olarak yönetir (Secure ve SameSite: strict kullanır).
+- `lib/api.ts` — request interceptor her isteğe `Authorization` header'ı ekler (mevcut akış için). Eğer production'da HTTP-only cookie kullanırsanız bu header'a artık gerek kalmayabilir (sunucu cookie'den token okuyorsa).
 
-// Sepeti oku
-const cart = cookieStorage.get("cart") || [];
+## 🎯 Özet
 
-// Sepeti güncelle
-const updatedCart = [...cart, newItem];
-cookieStorage.set("cart", updatedCart, { expires: 30 });
-```
+- Şu an: _client-side_ cookie ile token saklanıyor (js-cookie).
+- Daha güvenli: _HTTP-only cookie_ kullanımı önerilir — backend'de cookie ekleyin, frontend'de `withCredentials` açın, backend CORS ve JwtBearer'ı buna göre yapılandırın.
 
-### Kullanıcı Tercihlerini Sakla
-
-```typescript
-// Theme kaydet
-cookieStorage.set("theme", "dark", { expires: 365 });
-
-// Language kaydet
-cookieStorage.set("language", "tr", { expires: 365 });
-
-// Tercihleri oku
-const theme = cookieStorage.get("theme") || "light";
-const language = cookieStorage.get("language") || "tr";
-```
-
-### Remember Me Özelliği
-
-```typescript
-const handleLogin = async (rememberMe: boolean) => {
-  const response = await authApi.login(email, password);
-
-  // Remember me işaretliyse 30 gün, değilse 1 gün
-  const expires = rememberMe ? 30 : 1;
-  cookieStorage.setToken(response.data.token, expires);
-  cookieStorage.setUser(response.data, expires);
-};
-```
-
-## ⚙️ Environment Variables
-
-`.env.local` dosyasında:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5162
-NODE_ENV=development
-```
-
-Production'da `secure` flag otomatik aktif olur.
+Eğer istersen, production-ready adımların kod değişikliklerini ben uygulayıp test edebilirim (backend login, JwtBearer olayları, frontend axios config ve e2e test önerileri).

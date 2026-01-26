@@ -291,3 +291,4 @@
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/obj/Debug/net8.0/ETicaret.API.sourcelink.json
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/DotNetEnv.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Sprache.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.staticwebassets.runtime.json

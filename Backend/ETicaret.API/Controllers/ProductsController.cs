@@ -44,6 +44,18 @@ public class ProductsController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("autocomplete")]
+    public async Task<IActionResult> Autocomplete([FromQuery] string q)
+    {
+        if (string.IsNullOrWhiteSpace(q) || q.Length < 2)
+        {
+            return Ok(new { suggestions = new List<object>() });
+        }
+
+        var result = await _catalogService.GetAutocompleteAsync(q);
+        return Ok(new { suggestions = result });
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {

@@ -354,4 +354,54 @@ public class CatalogService : ICatalogService
         var categoryIds = GetCategoryIdsWithChildren(allCategories, categoryId);
         return allProducts.Count(p => categoryIds.Contains(p.CategoryId));
     }
+
+    public async Task<List<AutocompleteDto>> GetAutocompleteAsync(string query)
+    {
+        var searchLower = query.ToLower();
+        var results = new List<AutocompleteDto>();
+
+        // Search products
+        var products = await _context.Products
+            .Where(p => p.Name.ToLower().Contains(searchLower))
+            .Take(5)
+            .Select(p => new AutocompleteDto
+            {
+                Text = p.Name,
+                Type = "product",
+                Id = p.Id
+            })
+            .ToListAsync();
+
+        results.AddRange(products);
+
+        // Search categories
+        var categories = await _context.Categories
+            .Where(c => c.Name.ToLower().Contains(searchLower))
+            .Take(3)
+            .Select(c => new AutocompleteDto
+            {
+                Text = c.Name,
+                Type = "category",
+                Id = c.Id
+            })
+            .ToListAsync();
+
+        results.AddRange(categories);
+
+        // Search brands
+        var brands = await _context.Brands
+            .Where(b => b.Name.ToLower().Contains(searchLower))
+            .Take(3)
+            .Select(b => new AutocompleteDto
+            {
+                Text = b.Name,
+                Type = "brand",
+                Id = b.Id
+            })
+            .ToListAsync();
+
+        results.AddRange(brands);
+
+        return results;
+    }
 }

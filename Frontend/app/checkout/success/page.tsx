@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FaCheckCircle } from "react-icons/fa";
+import { Suspense } from "react";
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
 
@@ -31,5 +32,13 @@ export default function CheckoutSuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Yükleniyor...</div>}>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }

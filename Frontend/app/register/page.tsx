@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import { authApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -26,11 +26,14 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      await axios.post("http://localhost:5162/api/Auth/register", formData);
+      await authApi.register(formData);
       router.push("/login?registered=true");
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Kayıt başarısız.");
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as {
+          response?: { data?: { message?: string } };
+        };
+        setError(axiosError.response?.data?.message || "Kayıt başarısız.");
       } else {
         setError("Beklenmeyen bir hata oluştu.");
       }

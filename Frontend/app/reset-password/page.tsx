@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import axios from "axios";
+import { authApi } from "@/lib/api";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -46,13 +46,10 @@ function ResetPasswordContent() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5162/api/Auth/reset-password",
-        {
-          token,
-          newPassword,
-        },
-      );
+      console.log("Gönderilen token:", token);
+      console.log("Gönderilen newPassword:", newPassword);
+
+      const response = await authApi.resetPassword(token, newPassword);
 
       setMessage(response.data.message);
 
@@ -61,8 +58,14 @@ function ResetPasswordContent() {
         router.push("/login");
       }, 2000);
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Şifre sıfırlama başarısız.");
+      console.error("Reset password error:", err);
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as {
+          response?: { data?: { message?: string } };
+        };
+        setError(
+          axiosError.response?.data?.message || "Şifre sıfırlama başarısız.",
+        );
       } else {
         setError("Beklenmeyen bir hata oluştu.");
       }

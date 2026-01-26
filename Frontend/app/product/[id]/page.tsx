@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import StarRating from "@/components/StarRating";
+import ReviewForm from "@/components/ReviewForm";
+import ReviewCard from "@/components/ReviewCard";
 
 interface ProductDetail {
   id: string;
@@ -17,24 +21,42 @@ interface ProductDetail {
   brandName: string;
 }
 
+interface Review {
+  id: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  imageUrl?: string;
+  helpfulCount: number;
+  notHelpfulCount: number;
+  createdAt: string;
+}
+
+interface ProductReviews {
+  reviews: Review[];
+  totalCount: number;
+  averageRating: number;
+  ratingDistribution: { [key: number]: number };
+}
+
 export default function ProductDetailPage() {
   const { id } = useParams() as { id: string };
   const { addToCart } = useCart();
+  const { user } = useAuth();
   const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [reviews, setReviews] = useState<ProductReviews | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [adding, setAdding] = useState(false);
-
   const [isAdded, setIsAdded] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   useEffect(() => {
     if (!id) return;
 
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5162/api/Products/${id}`
-        );
+        const response = await api.get(`/api/Products/${id}`);
         setProduct(response.data);
       } catch (err) {
         console.error(err);
@@ -44,8 +66,29 @@ export default function ProductDetailPage() {
       }
     };
 
+    const fetchReviews = async () => {
+      try {
+        const response = await api.get(`/api/Reviews/product/${id}`);
+        setReviews(response.data);
+      } catch (err) {
+        console.error("Reviews fetch error:", err);
+      }
+    };
+
     fetchProduct();
+    fetchReviews();
   }, [id]);
+
+  const handleReviewSubmitted = async () => {
+    // Refresh reviews after new review
+    try {
+      const response = await api.get(`/api/Reviews/product/${id}`);
+      setReviews(response.data);
+      setShowReviewForm(false);
+    } catch (err) {
+      console.error("Error refreshing reviews:", err);
+    }
+  };
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -124,11 +167,111 @@ export default function ProductDetailPage() {
               {isAdded
                 ? "Sepete Eklendi"
                 : adding
-                ? "Ekleniyor..."
-                : "Sepete Ekle"}
+                  ? "Ekleniyor..."
+                  : "Sepete Ekle"}
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="mt-16">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">
+            Müşteri Yorumları
+          </h2>
+          {user && (
+            <button
+              onClick={() => setShowReviewForm(!showReviewForm)}
+              className="bg-custom-red text-white px-6 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              {showReviewForm ? "İptal" : "Yorum Yaz"}
+            </button>
+          )}
+        </div>
+
+        {/* Rating Summary */}
+        {reviews && reviews.totalCount > 0 && (
+          <div className="bg-gray-50 p-6 rounded-lg mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col items-center justify-center">
+                <div className="text-5xl font-bold text-gray-900 mb-2">
+                  {reviews.averageRating.toFixed(1)}
+                </div>
+                <StarRating
+                  rating={Math.round(reviews.averageRating)}
+                  readonly
+                  size="lg"
+                />
+                <p className="text-sm text-gray-600 mt-2">
+                  {reviews.totalCount} değerlendirme
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                {[5, 4, 3, 2, 1].map((star) => {
+                  const count = reviews.ratingDistribution[star] || 0;
+                  const percentage =
+                    reviews.totalCount > 0
+                      ? (count / reviews.totalCount) * 100
+                      : 0;
+
+                  return (
+                    <div key={star} className="flex items-center gap-2">
+                      <span className="text-sm font-medium w-8">{star}★</span>
+                      <div className="flex-1 bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-yellow-400 h-2 rounded-full transition-all"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                      <span className="text-sm text-gray-600 w-8 text-right">
+                        {count}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Review Form */}
+        {showReviewForm && (
+          <div className="mb-8">
+            <ReviewForm
+              productId={id}
+              onReviewSubmitted={handleReviewSubmitted}
+            />
+          </div>
+        )}
+
+        {/* Reviews List */}
+        {reviews && reviews.reviews.length > 0 ? (
+          <div className="space-y-6">
+            {reviews.reviews.map((review) => (
+              <ReviewCard
+                key={review.id}
+                review={review}
+                onVote={handleReviewSubmitted}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-600">
+              Bu ürün için henüz yorum yapılmamış.
+            </p>
+            {user && !showReviewForm && (
+              <button
+                onClick={() => setShowReviewForm(true)}
+                className="mt-4 text-custom-red font-semibold hover:underline"
+              >
+                İlk yorumu siz yapın!
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

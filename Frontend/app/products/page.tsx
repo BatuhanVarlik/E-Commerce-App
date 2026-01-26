@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState, useCallback } from "react";
+import { api } from "@/lib/api";
 import { useSearchParams, useRouter } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { Suspense } from "react";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -46,6 +47,11 @@ interface Filters {
   inStock: boolean;
   sortBy: string;
   page: number;
+}
+
+interface SearchSuggestion {
+  text: string;
+  type: "product" | "category" | "brand";
 }
 
 function parseFiltersFromUrl(searchParams: URLSearchParams): Filters {
@@ -178,23 +184,81 @@ function ProductsContent() {
     parseFiltersFromUrl(searchParams),
   );
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchSuggestions, setSearchSuggestions] = useState<
+    SearchSuggestion[]
+  >([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+
+  // Load search history from localStorage
+  useEffect(() => {
+    const history = localStorage.getItem("searchHistory");
+    if (history) {
+      setSearchHistory(JSON.parse(history));
+    }
+  }, []);
+
+  const saveSearchToHistory = useCallback(
+    (query: string) => {
+      if (!query.trim()) return;
+      const updated = [
+        query,
+        ...searchHistory.filter((q) => q !== query),
+      ].slice(0, 5);
+      setSearchHistory(updated);
+      localStorage.setItem("searchHistory", JSON.stringify(updated));
+    },
+    [searchHistory],
+  );
+
+  const fetchProducts = useCallback(
+    async (currentFilters: Filters) => {
+      setLoading(true);
+      try {
+        const url = buildApiUrl(currentFilters);
+        const response = await api.get(url);
+        setData(response.data);
+
+        // Save search to history when results are loaded
+        if (currentFilters.searchQuery) {
+          saveSearchToHistory(currentFilters.searchQuery);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [saveSearchToHistory],
+  );
 
   useEffect(() => {
     const newFilters = parseFiltersFromUrl(searchParams);
     setFilters(newFilters);
     fetchProducts(newFilters);
-  }, [searchParams]);
+  }, [searchParams, fetchProducts]);
 
-  const fetchProducts = async (currentFilters: Filters) => {
-    setLoading(true);
+  const fetchSuggestions = async (query: string) => {
+    if (!query || query.length < 2) {
+      setSearchSuggestions([]);
+      return;
+    }
+
     try {
-      const url = buildApiUrl(currentFilters);
-      const response = await axios.get(url);
-      setData(response.data);
+      const response = await api.get(
+        `http://localhost:5162/api/Products/autocomplete?q=${encodeURIComponent(query)}`,
+      );
+      const suggestions: SearchSuggestion[] = response.data.suggestions.map(
+        (s: { text: string; type: string }) => ({
+          text: s.text,
+          type: s.type as "product" | "category" | "brand",
+        }),
+      );
+
+      setSearchSuggestions(suggestions);
     } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching suggestions:", error);
     }
   };
 
@@ -208,10 +272,12 @@ function ProductsContent() {
   const applyFilters = () => {
     const newFilters = { ...filters, page: 1 };
     router.push(buildBrowserUrl(newFilters));
+    setShowSuggestions(false);
   };
 
   const clearFilters = () => {
     router.push("/products");
+    setShowSuggestions(false);
   };
 
   const changePage = (page: number) => {
@@ -247,12 +313,60 @@ function ProductsContent() {
             ? `"${filters.searchQuery}" için arama sonuçları`
             : "Tüm Ürünler"}
         </h1>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300 lg:hidden"
-        >
-          {showFilters ? "Filtreleri Gizle" : "Filtreler"}
-        </button>
+        <div className="flex gap-2">
+          {/* View Mode Toggle */}
+          <div className="hidden sm:flex items-center gap-1 rounded bg-gray-200 p-1">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded transition ${
+                viewMode === "grid" ? "bg-white shadow" : "hover:bg-gray-300"
+              }`}
+              title="Grid görünümü"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-2 rounded transition ${
+                viewMode === "list" ? "bg-white shadow" : "hover:bg-gray-300"
+              }`}
+              title="Liste görünümü"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300 lg:hidden"
+          >
+            {showFilters ? "Filtreleri Gizle" : "Filtreler"}
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-6">
@@ -265,13 +379,133 @@ function ProductsContent() {
 
             <div>
               <label className="mb-2 block text-sm font-medium">Ara</label>
-              <input
-                type="text"
-                className="w-full rounded border p-2"
-                placeholder="Ürün ara..."
-                value={filters.searchQuery}
-                onChange={(e) => updateFilter("searchQuery", e.target.value)}
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  className="w-full rounded border p-2"
+                  placeholder="Ürün ara..."
+                  value={filters.searchQuery}
+                  onChange={(e) => {
+                    updateFilter("searchQuery", e.target.value);
+                    fetchSuggestions(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() =>
+                    setTimeout(() => setShowSuggestions(false), 200)
+                  }
+                />
+
+                {/* Autocomplete Dropdown */}
+                {showSuggestions &&
+                  (searchSuggestions.length > 0 ||
+                    searchHistory.length > 0) && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-64 overflow-y-auto">
+                      {searchHistory.length > 0 && !filters.searchQuery && (
+                        <div className="p-2 border-b">
+                          <div className="text-xs text-gray-500 mb-1">
+                            Son Aramalar
+                          </div>
+                          {searchHistory.map((term, idx) => (
+                            <button
+                              key={idx}
+                              className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm flex items-center gap-2"
+                              onClick={() => {
+                                updateFilter("searchQuery", term);
+                                setShowSuggestions(false);
+                              }}
+                            >
+                              <svg
+                                className="w-4 h-4 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                              {term}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      {searchSuggestions.length > 0 && (
+                        <div className="p-2">
+                          <div className="text-xs text-gray-500 mb-1">
+                            Öneriler
+                          </div>
+                          {searchSuggestions.map((suggestion, idx) => (
+                            <button
+                              key={idx}
+                              className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm flex items-center gap-2"
+                              onClick={() => {
+                                updateFilter("searchQuery", suggestion.text);
+                                setShowSuggestions(false);
+                              }}
+                            >
+                              {suggestion.type === "product" && (
+                                <svg
+                                  className="w-4 h-4 text-gray-400"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                  />
+                                </svg>
+                              )}
+                              {suggestion.type === "category" && (
+                                <svg
+                                  className="w-4 h-4 text-gray-400"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                                  />
+                                </svg>
+                              )}
+                              {suggestion.type === "brand" && (
+                                <svg
+                                  className="w-4 h-4 text-gray-400"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                                  />
+                                </svg>
+                              )}
+                              <div className="flex-1">
+                                <span>{suggestion.text}</span>
+                                <span className="ml-2 text-xs text-gray-400 capitalize">
+                                  ({suggestion.type})
+                                </span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+              </div>
             </div>
 
             <div>
@@ -392,11 +626,50 @@ function ProductsContent() {
             </select>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className={`${
+              viewMode === "grid"
+                ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                : "flex flex-col gap-4"
+            }`}
+          >
             {data.products.length > 0 ? (
-              data.products.map((product) => (
-                <ProductCard key={product.id} {...product} />
-              ))
+              data.products.map((product) =>
+                viewMode === "grid" ? (
+                  <ProductCard key={product.id} {...product} />
+                ) : (
+                  <div
+                    key={product.id}
+                    className="flex gap-4 bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
+                  >
+                    <div className="relative w-32 h-32">
+                      <Image
+                        src={product.imageUrl || "/placeholder.png"}
+                        alt={product.name}
+                        fill
+                        className="object-cover rounded"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg mb-1">
+                        {product.name}
+                      </h3>
+                      <p className="text-sm text-gray-500 mb-2">
+                        {product.categoryName}
+                      </p>
+                      <p className="text-2xl font-bold text-custom-red mb-2">
+                        {product.price} ₺
+                      </p>
+                      <a
+                        href={`/product/${product.slug}`}
+                        className="inline-block bg-custom-red text-white px-4 py-2 rounded hover:bg-red-700 transition"
+                      >
+                        Detayları Gör
+                      </a>
+                    </div>
+                  </div>
+                ),
+              )
             ) : (
               <p className="col-span-3 text-center text-gray-500">
                 Filtrelere uygun ürün bulunamadı.

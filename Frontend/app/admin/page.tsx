@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { FaEye } from "react-icons/fa";
+import Link from "next/link";
 
 interface Order {
   id: string;
@@ -55,8 +56,16 @@ export default function AdminDashboard() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-        <div className="text-gray-500">
-          Son Güncelleme: {new Date().toLocaleTimeString()}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin/reviews"
+            className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+          >
+            Yorum Moderasyonu
+          </Link>
+          <div className="text-gray-500">
+            Son Güncelleme: {new Date().toLocaleTimeString()}
+          </div>
         </div>
       </div>
 

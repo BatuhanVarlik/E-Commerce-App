@@ -2,7 +2,7 @@
 
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
@@ -42,24 +42,16 @@ export default function CheckoutPage() {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5162/api/Checkout",
-        {
-          cardHolderName,
-          cardNumber: cardNumber.replace(/\s/g, ""),
-          expireMonth,
-          expireYear,
-          cvc,
-          address,
-          city,
-          zipCode,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const response = await api.post("/api/Checkout", {
+        cardHolderName,
+        cardNumber: cardNumber.replace(/\s/g, ""),
+        expireMonth,
+        expireYear,
+        cvc,
+        address,
+        city,
+        zipCode,
+      });
 
       // On success
       await clearCart();
@@ -67,7 +59,7 @@ export default function CheckoutPage() {
     } catch (err: any) {
       console.error(err);
       setError(
-        err.response?.data?.message || "Ödeme sırasında bir hata oluştu."
+        err.response?.data?.message || "Ödeme sırasında bir hata oluştu.",
       );
     } finally {
       setIsProcessing(false);
@@ -217,7 +209,7 @@ export default function CheckoutPage() {
             {isProcessing
               ? "İşleniyor..."
               : `Ödemeyi Tamamla (${cart.totalPrice.toLocaleString(
-                  "tr-TR"
+                  "tr-TR",
                 )} ₺)`}
           </button>
         </form>

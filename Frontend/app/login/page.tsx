@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import { authApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -21,13 +21,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5162/api/Auth/login",
-        {
-          email,
-          password,
-        },
-      );
+      const response = await authApi.login(email, password);
 
       // Use Context to login
       login(response.data);
@@ -38,8 +32,11 @@ export default function LoginPage() {
         router.push("/profile");
       }
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Giris basarisiz.");
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as {
+          response?: { data?: { message?: string } };
+        };
+        setError(axiosError.response?.data?.message || "Giris basarisiz.");
       } else {
         setError("Beklenmeyen bir hata oluştu.");
       }

@@ -16,4 +16,5 @@ public interface IReviewService
     Task ApproveReviewAsync(string reviewId);
     Task RejectReviewAsync(string reviewId);
     Task<List<ReviewDto>> GetPendingReviewsAsync();
+    Task<List<ReviewDto>> GetAllReviewsAsync();
 }

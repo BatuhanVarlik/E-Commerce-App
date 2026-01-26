@@ -21,6 +21,7 @@ public class ReviewDto
     public string UserId { get; set; } = string.Empty;
     public string UserName { get; set; } = string.Empty;
     public string ProductId { get; set; } = string.Empty;
+    public string? ProductName { get; set; }
     public int Rating { get; set; }
     public string Comment { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }

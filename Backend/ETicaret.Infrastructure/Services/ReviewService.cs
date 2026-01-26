@@ -33,9 +33,10 @@ public class ReviewService : IReviewService
             UserId = userId,
             ProductId = productGuid,
             Rating = dto.Rating,
-            Comment = dto.Comment,
+            Comment = dto.Comment ?? string.Empty,
             ImageUrl = dto.ImageUrl,
-            IsApproved = false
+            // Eğer yorum boşsa (sadece rating varsa) otomatik onayla
+            IsApproved = string.IsNullOrEmpty(dto.Comment?.Trim())
         };
 
         _context.Reviews.Add(review);
@@ -224,8 +225,20 @@ public class ReviewService : IReviewService
     {
         var reviews = await _context.Reviews
             .Include(r => r.User)
+            .Include(r => r.Product)
             .Where(r => !r.IsApproved)
             .OrderBy(r => r.CreatedAt)
+            .ToListAsync();
+
+        return reviews.Select(MapToDto).ToList();
+    }
+
+    public async Task<List<ReviewDto>> GetAllReviewsAsync()
+    {
+        var reviews = await _context.Reviews
+            .Include(r => r.User)
+            .Include(r => r.Product)
+            .OrderByDescending(r => r.CreatedAt)
             .ToListAsync();
 
         return reviews.Select(MapToDto).ToList();
@@ -254,6 +267,7 @@ public class ReviewService : IReviewService
             UserId = review.UserId,
             UserName = review.User?.UserName ?? "Anonim",
             ProductId = review.ProductId.ToString(),
+            ProductName = review.Product?.Name,
             Rating = review.Rating,
             Comment = review.Comment,
             ImageUrl = review.ImageUrl,

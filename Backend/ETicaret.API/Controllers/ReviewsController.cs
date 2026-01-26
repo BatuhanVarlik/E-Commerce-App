@@ -113,8 +113,8 @@ public class ReviewsController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("{reviewId}/helpful")]
-    public async Task<IActionResult> MarkHelpful(string reviewId, [FromBody] bool isHelpful)
+    [HttpPost("{reviewId}/vote")]
+    public async Task<IActionResult> VoteReview(string reviewId, [FromBody] VoteRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
@@ -122,7 +122,9 @@ public class ReviewsController : ControllerBase
             return Unauthorized();
         }
 
-        await _reviewService.MarkReviewHelpfulAsync(userId, reviewId, isHelpful);
+        await _reviewService.MarkReviewHelpfulAsync(userId, reviewId, request.IsHelpful);
         return Ok(new { message = "Oy kaydedildi." });
     }
 }
+
+public record VoteRequest(bool IsHelpful);

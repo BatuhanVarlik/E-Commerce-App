@@ -25,3 +25,10 @@ public class CreateProductDto
     public Guid CategoryId { get; set; }
     public Guid BrandId { get; set; }
 }
+
+public class AutocompleteDto
+{
+    public string Text { get; set; } = string.Empty;
+    public string Type { get; set; } = string.Empty; // "product", "category", "brand"
+    public Guid? Id { get; set; }
+}

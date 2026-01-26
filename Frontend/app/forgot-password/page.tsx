@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import { authApi } from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -20,10 +20,7 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5162/api/Auth/forgot-password",
-        { email },
-      );
+      const response = await authApi.forgotPassword(email);
 
       setMessage(response.data.message);
 
@@ -32,8 +29,11 @@ export default function ForgotPasswordPage() {
         setResetToken(response.data.resetToken);
       }
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || "Bir hata oluştu.");
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as {
+          response?: { data?: { message?: string } };
+        };
+        setError(axiosError.response?.data?.message || "Bir hata oluştu.");
       } else {
         setError("Beklenmeyen bir hata oluştu.");
       }

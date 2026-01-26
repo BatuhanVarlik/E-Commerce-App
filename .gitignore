@@ -46,3 +46,7 @@ Frontend/.env.local
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Uploaded files
+Backend/ETicaret.API/wwwroot/uploads/**
+!Backend/ETicaret.API/wwwroot/uploads/**/.gitkeep

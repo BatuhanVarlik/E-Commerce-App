@@ -20,7 +20,21 @@ public class AdminReviewsController : ControllerBase
     public async Task<IActionResult> GetPendingReviews()
     {
         var result = await _reviewService.GetPendingReviewsAsync();
-        return Ok(result);
+        return Ok(new { reviews = result, totalCount = result.Count });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllReviews([FromQuery] bool? isApproved = null)
+    {
+        var allReviews = await _reviewService.GetAllReviewsAsync();
+        
+        // Frontend'ten gelen filtreye göre filtrele
+        if (isApproved.HasValue)
+        {
+            allReviews = allReviews.Where(r => r.IsApproved == isApproved.Value).ToList();
+        }
+        
+        return Ok(new { reviews = allReviews, totalCount = allReviews.Count });
     }
 
     [HttpPost("{reviewId}/approve")]
@@ -48,6 +62,27 @@ public class AdminReviewsController : ControllerBase
         catch (KeyNotFoundException ex)
         {
             return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("approve-empty-reviews")]
+    public async Task<IActionResult> ApproveEmptyReviews()
+    {
+        try
+        {
+            var allReviews = await _reviewService.GetAllReviewsAsync();
+            var emptyReviews = allReviews.Where(r => !r.IsApproved && string.IsNullOrEmpty(r.Comment?.Trim())).ToList();
+            
+            foreach (var review in emptyReviews)
+            {
+                await _reviewService.ApproveReviewAsync(review.Id);
+            }
+            
+            return Ok(new { message = $"{emptyReviews.Count} boş yorum otomatik onaylandı.", count = emptyReviews.Count });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 }

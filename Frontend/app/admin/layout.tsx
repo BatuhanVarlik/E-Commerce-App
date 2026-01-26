@@ -5,6 +5,7 @@ import {
   FaClipboardList,
   FaSignOutAlt,
   FaTag,
+  FaComments,
 } from "react-icons/fa";
 
 export default function AdminLayout({
@@ -43,6 +44,12 @@ export default function AdminLayout({
             className="flex items-center gap-3 px-4 py-3 rounded text-gray-600 hover:bg-gray-50 hover:text-custom-red transition-colors"
           >
             <FaClipboardList /> Siparişler
+          </Link>
+          <Link
+            href="/admin/reviews"
+            className="flex items-center gap-3 px-4 py-3 rounded text-gray-600 hover:bg-gray-50 hover:text-custom-red transition-colors"
+          >
+            <FaComments /> Yorumlar
           </Link>
 
           <div className="pt-8 mt-8 border-t border-gray-200">
