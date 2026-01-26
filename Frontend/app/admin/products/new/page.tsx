@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 interface Category {
@@ -42,8 +42,8 @@ export default function NewProductPage() {
     const fetchData = async () => {
       try {
         const [catRes, brandRes] = await Promise.all([
-          axios.get("http://localhost:5162/api/Categories"),
-          axios.get("http://localhost:5162/api/Brands"),
+          api.get("/api/Categories"),
+          api.get("/api/Brands"),
         ]);
         setCategories(catRes.data);
         setBrands(brandRes.data);
@@ -69,8 +69,6 @@ export default function NewProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-
       // Marka kontrolü ve oluşturma
       let brandIdToUse = formData.brandId;
 
@@ -84,11 +82,9 @@ export default function NewProductPage() {
       } else if (brandName.trim()) {
         // Yeni marka oluştur
         try {
-          const brandResponse = await axios.post(
-            "http://localhost:5162/api/Brands",
-            { name: brandName.trim() },
-            { headers: { Authorization: `Bearer ${token}` } },
-          );
+          const brandResponse = await api.post("/api/Brands", {
+            name: brandName.trim(),
+          });
           brandIdToUse = brandResponse.data.id;
         } catch (error) {
           alert("Marka oluşturulamadı.");
@@ -101,13 +97,7 @@ export default function NewProductPage() {
 
       const productData = { ...formData, brandId: brandIdToUse };
 
-      await axios.post(
-        "http://localhost:5162/api/admin/products",
-        productData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await api.post("/api/admin/products", productData);
       alert("Ürün başarıyla oluşturuldu.");
       router.push("/admin/products");
     } catch (error) {

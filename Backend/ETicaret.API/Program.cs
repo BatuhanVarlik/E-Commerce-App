@@ -2,8 +2,12 @@ using ETicaret.Infrastructure;
 using Microsoft.OpenApi.Models;
 using DotNetEnv;
 
-// .env dosyasını yükle
-Env.Load("../.env");
+// .env dosyasını yükle (Backend klasöründen)
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+if (File.Exists(envPath))
+{
+    Env.Load(envPath);
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +24,20 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add Authentication & JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["SecretKey"] ?? Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
+
+// appsettings.json'dan environment variable isimlerini al
+var secretKeyVar = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JwtSettings:SecretKey not found in appsettings.json");
+var issuerVar = jwtSettings["Issuer"] ?? throw new InvalidOperationException("JwtSettings:Issuer not found in appsettings.json");
+var audienceVar = jwtSettings["Audience"] ?? throw new InvalidOperationException("JwtSettings:Audience not found in appsettings.json");
+
+// .env dosyasından gerçek değerleri al
+var secretKey = Environment.GetEnvironmentVariable(secretKeyVar)
+    ?? throw new InvalidOperationException($"{secretKeyVar} environment variable is required. Please check your .env file.");
+var issuer = Environment.GetEnvironmentVariable(issuerVar)
+    ?? throw new InvalidOperationException($"{issuerVar} environment variable is required. Please check your .env file.");
+var audience = Environment.GetEnvironmentVariable(audienceVar)
+    ?? throw new InvalidOperationException($"{audienceVar} environment variable is required. Please check your .env file.");
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
@@ -34,9 +51,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"] ?? Environment.GetEnvironmentVariable("JWT_ISSUER"),
-        ValidAudience = jwtSettings["Audience"] ?? Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey!))
+        ValidIssuer = issuer,
+        ValidAudience = audience,
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey))
     };
 });
 

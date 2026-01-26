@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import Link from "next/link";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import Image from "next/image";
@@ -23,7 +23,7 @@ export default function AdminProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export default function AdminProductsPage() {
   const fetchData = async () => {
     try {
       const [prodRes, catRes] = await Promise.all([
-        axios.get("http://localhost:5162/api/Products"),
-        axios.get("http://localhost:5162/api/Categories"),
+        api.get("/api/Products"),
+        api.get("/api/Categories"),
       ]);
       setProducts(prodRes.data);
       setCategories(flattenCategories(catRes.data));
@@ -51,14 +51,14 @@ export default function AdminProductsPage() {
 
   const flattenCategories = (
     cats: any[],
-    prefix = ""
+    prefix = "",
   ): { id: string; name: string }[] => {
     let result: { id: string; name: string }[] = [];
     for (const cat of cats) {
       result.push({ id: cat.id, name: prefix + cat.name });
       if (cat.subCategories && cat.subCategories.length > 0) {
         result = result.concat(
-          flattenCategories(cat.subCategories, prefix + cat.name + " > ")
+          flattenCategories(cat.subCategories, prefix + cat.name + " > "),
         );
       }
     }
@@ -70,7 +70,7 @@ export default function AdminProductsPage() {
 
     if (searchTerm) {
       result = result.filter((p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+        p.name.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
@@ -89,7 +89,7 @@ export default function AdminProductsPage() {
         (p) =>
           p.categoryName ===
             categories.find((c) => c.id === selectedCategory)?.name ||
-          (p as any).categoryId === selectedCategory
+          (p as any).categoryId === selectedCategory,
       );
     }
 
@@ -100,10 +100,7 @@ export default function AdminProductsPage() {
     if (!confirm("Bu ürünü silmek istediğinize emin misiniz?")) return;
 
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5162/api/admin/products/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/api/admin/products/${id}`);
       setProducts(products.filter((p) => p.id !== id));
       alert("Ürün silindi.");
     } catch (error) {

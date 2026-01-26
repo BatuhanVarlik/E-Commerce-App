@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useRouter, useParams } from "next/navigation";
 
 interface Category {
@@ -36,39 +36,24 @@ export default function EditProductPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
-
         const [catRes, brandRes, prodRes] = await Promise.all([
-          axios.get("http://localhost:5162/api/Categories"),
-          axios.get("http://localhost:5162/api/Brands"),
-          axios.get(`http://localhost:5162/api/admin/products/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
+          api.get("/api/Categories"),
+          api.get("/api/Brands"),
+          api.get(`/api/admin/products/${id}`),
         ]);
 
         setCategories(catRes.data);
         setBrands(brandRes.data);
         const p = prodRes.data;
 
-        // Need to find categoryId/brandId from names if API returns object with names,
-        // BUT GetProductByIdAsync returns ProductDto which has CategoryName/BrandName but NOT IDs?
-        // Wait, check ProductDto.
-        // ProductDto: Id, Name, Slug, Description, Price, Stock, ImageUrl, CategoryName, BrandName.
-        // It DOES NOT have CategoryId or BrandId.
-        // This is a problem for Editing. I need the IDs to pre-fill the form.
-
-        // FIX: I need to update ProductDto to include CategoryId and BrandId, OR create an AdminProductDto.
-        // I will update ProductDtos.cs to include IDs.
-
-        // For now, assuming I will fix backend, let's map what we have.
         setFormData({
           name: p.name,
           description: p.description,
           price: p.price,
           stock: p.stock,
           imageUrl: p.imageUrl,
-          categoryId: p.categoryId, // Ensure DTO has this
-          brandId: p.brandId, // Ensure DTO has this
+          categoryId: p.categoryId,
+          brandId: p.brandId,
         });
       } catch (error) {
         console.error("Veriler çekilemedi:", error);
@@ -83,7 +68,7 @@ export default function EditProductPage() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -95,14 +80,7 @@ export default function EditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5162/api/admin/products/${id}`,
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.put(`/api/admin/products/${id}`, formData);
       alert("Ürün başarıyla güncellendi.");
       router.push("/admin/products");
     } catch (error) {
@@ -113,14 +91,14 @@ export default function EditProductPage() {
 
   const flattenCategories = (
     cats: Category[],
-    prefix = ""
+    prefix = "",
   ): { id: string; name: string }[] => {
     let result: { id: string; name: string }[] = [];
     for (const cat of cats) {
       result.push({ id: cat.id, name: prefix + cat.name });
       if (cat.subCategories && cat.subCategories.length > 0) {
         result = result.concat(
-          flattenCategories(cat.subCategories, prefix + cat.name + " > ")
+          flattenCategories(cat.subCategories, prefix + cat.name + " > "),
         );
       }
     }

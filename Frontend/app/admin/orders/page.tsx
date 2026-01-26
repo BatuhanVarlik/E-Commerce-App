@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { FaEye } from "react-icons/fa";
 
 interface Order {
@@ -19,13 +19,7 @@ export default function AdminOrdersPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "http://localhost:5162/api/admin/orders",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get("/api/admin/orders");
         setOrders(response.data);
       } catch (error) {
         console.error("Siparişler çekilemedi:", error);

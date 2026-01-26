@@ -14,9 +14,26 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // .env değişkenlerinden connection string al
-        var connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? $"Host={Environment.GetEnvironmentVariable("DB_HOST")};Port={Environment.GetEnvironmentVariable("DB_PORT")};Database={Environment.GetEnvironmentVariable("DB_NAME")};Username={Environment.GetEnvironmentVariable("DB_USER")};Password={Environment.GetEnvironmentVariable("DB_PASSWORD")}";
+        // appsettings.json'dan environment variable isimlerini al
+        var dbHostKey = configuration["Database:Host"] ?? throw new InvalidOperationException("Database:Host key not found in appsettings.json");
+        var dbPortKey = configuration["Database:Port"] ?? throw new InvalidOperationException("Database:Port key not found in appsettings.json");
+        var dbNameKey = configuration["Database:Name"] ?? throw new InvalidOperationException("Database:Name key not found in appsettings.json");
+        var dbUserKey = configuration["Database:User"] ?? throw new InvalidOperationException("Database:User key not found in appsettings.json");
+        var dbPasswordKey = configuration["Database:Password"] ?? throw new InvalidOperationException("Database:Password key not found in appsettings.json");
+
+        // .env dosyasından gerçek değerleri al
+        var dbHost = Environment.GetEnvironmentVariable(dbHostKey) 
+            ?? throw new InvalidOperationException($"{dbHostKey} environment variable is required. Please check your .env file.");
+        var dbPort = Environment.GetEnvironmentVariable(dbPortKey) 
+            ?? throw new InvalidOperationException($"{dbPortKey} environment variable is required. Please check your .env file.");
+        var dbName = Environment.GetEnvironmentVariable(dbNameKey) 
+            ?? throw new InvalidOperationException($"{dbNameKey} environment variable is required. Please check your .env file.");
+        var dbUser = Environment.GetEnvironmentVariable(dbUserKey) 
+            ?? throw new InvalidOperationException($"{dbUserKey} environment variable is required. Please check your .env file.");
+        var dbPassword = Environment.GetEnvironmentVariable(dbPasswordKey) 
+            ?? throw new InvalidOperationException($"{dbPasswordKey} environment variable is required. Please check your .env file.");
+        
+        var connectionString = $"Host={dbHost};Port={dbPort};Database={dbName};Username={dbUser};Password={dbPassword}";
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
@@ -45,10 +62,10 @@ public static class DependencyInjection
         // Redis Configuration
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {
-            var config = configuration.GetConnectionString("Redis") 
-                ?? Environment.GetEnvironmentVariable("REDIS_CONNECTION") 
-                ?? "localhost:6379";
-            return ConnectionMultiplexer.Connect(config);
+            var redisKey = configuration["Redis:Connection"] ?? throw new InvalidOperationException("Redis:Connection key not found in appsettings.json");
+            var redisConnection = Environment.GetEnvironmentVariable(redisKey) 
+                ?? throw new InvalidOperationException($"{redisKey} environment variable is required. Please check your .env file.");
+            return ConnectionMultiplexer.Connect(redisConnection);
         });
 
         return services;

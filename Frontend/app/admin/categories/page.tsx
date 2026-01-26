@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
 interface Category {
@@ -29,7 +29,7 @@ export default function AdminCategoriesPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:5162/api/Categories");
+      const response = await api.get("/api/Categories");
       setCategories(response.data);
     } catch (error) {
       console.error("Kategoriler çekilemedi:", error);
@@ -41,7 +41,6 @@ export default function AdminCategoriesPage() {
   const handleCreate = async () => {
     if (!newCatName) return;
     try {
-      const token = localStorage.getItem("token");
       const payload: { name: string; parentId?: string } = { name: newCatName };
 
       // En derin seviyeyi seç (4. > 3. > 2. > 1. > Ana)
@@ -53,9 +52,7 @@ export default function AdminCategoriesPage() {
         payload.parentId = parentCategoryId;
       }
 
-      await axios.post("http://localhost:5162/api/admin/categories", payload, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.post("/api/admin/categories", payload);
       setNewCatName("");
       setParentCategoryId("");
       setSubCategoryId("");
@@ -73,13 +70,7 @@ export default function AdminCategoriesPage() {
   const confirmDelete = async () => {
     if (!deletingCategory) return;
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(
-        `http://localhost:5162/api/admin/categories/${deletingCategory.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await api.delete(`/api/admin/categories/${deletingCategory.id}`);
       setDeletingCategory(null);
       fetchCategories();
     } catch {
@@ -95,14 +86,9 @@ export default function AdminCategoriesPage() {
   const handleUpdate = async () => {
     if (!editingCategory || !editName) return;
     try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5162/api/admin/categories/${editingCategory.id}`,
-        { name: editName },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await api.put(`/api/admin/categories/${editingCategory.id}`, {
+        name: editName,
+      });
       setEditingCategory(null);
       setEditName("");
       fetchCategories();

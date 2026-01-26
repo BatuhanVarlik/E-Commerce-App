@@ -97,7 +97,24 @@ public class AuthService : IAuthService
     private async Task<string> GenerateJwtTokenAsync(User user)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
-        var key = Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!);
+        
+        // appsettings.json'dan environment variable isimlerini al
+        var secretKeyVar = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JwtSettings:SecretKey not found in appsettings.json");
+        var issuerVar = jwtSettings["Issuer"] ?? throw new InvalidOperationException("JwtSettings:Issuer not found in appsettings.json");
+        var audienceVar = jwtSettings["Audience"] ?? throw new InvalidOperationException("JwtSettings:Audience not found in appsettings.json");
+        var durationVar = jwtSettings["DurationInMinutes"] ?? throw new InvalidOperationException("JwtSettings:DurationInMinutes not found in appsettings.json");
+        
+        // .env dosyasından gerçek değerleri al
+        var secretKey = Environment.GetEnvironmentVariable(secretKeyVar)
+            ?? throw new InvalidOperationException($"{secretKeyVar} environment variable is required. Please check your .env file.");
+        var issuer = Environment.GetEnvironmentVariable(issuerVar)
+            ?? throw new InvalidOperationException($"{issuerVar} environment variable is required. Please check your .env file.");
+        var audience = Environment.GetEnvironmentVariable(audienceVar)
+            ?? throw new InvalidOperationException($"{audienceVar} environment variable is required. Please check your .env file.");
+        var durationMinutes = Environment.GetEnvironmentVariable(durationVar)
+            ?? throw new InvalidOperationException($"{durationVar} environment variable is required. Please check your .env file.");
+        
+        var key = Encoding.UTF8.GetBytes(secretKey);
 
         var claims = new List<Claim>
         {
@@ -116,10 +133,10 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["DurationInMinutes"]!)),
+            Expires = DateTime.UtcNow.AddMinutes(double.Parse(durationMinutes)),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            Issuer = jwtSettings["Issuer"],
-            Audience = jwtSettings["Audience"]
+            Issuer = issuer,
+            Audience = audience
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

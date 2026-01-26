@@ -12,7 +12,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     // If not logged in, redirect to login
-    if (!user && !localStorage.getItem("user")) {
+    if (!user) {
       router.push("/login");
     }
   }, [user, router]);

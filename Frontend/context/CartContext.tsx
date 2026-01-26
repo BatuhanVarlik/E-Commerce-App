@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { useAuth } from "./AuthContext";
+import { cookieStorage } from "@/lib/cookieStorage";
 
 export interface CartItem {
   productId: string;
@@ -38,12 +39,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [guestId, setGuestId] = useState<string>("");
 
   useEffect(() => {
-    let id = localStorage.getItem("guestId");
+    let id = cookieStorage.get("guestId");
     if (!id) {
       id = "guest_" + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem("guestId", id);
+      cookieStorage.set("guestId", id as string, { expires: 365 }); // 1 yıl geçerli
     }
-    setGuestId(id);
+    setGuestId(id as string);
   }, []);
 
   const getCartId = () => (user ? user.email : guestId);
@@ -53,7 +54,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const cartId = getCartId();
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5162/api/Cart/${cartId}`);
+      const res = await api.get(`/api/Cart/${cartId}`);
       setCart(res.data);
     } catch (error) {
       console.error("Error fetching cart", error);
@@ -70,7 +71,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (!cart) return;
     const updatedItems = [...cart.items];
     const existingIndex = updatedItems.findIndex(
-      (i) => i.productId === item.productId
+      (i) => i.productId === item.productId,
     );
 
     if (existingIndex >= 0) {
@@ -95,14 +96,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
 
     const updatedItems = cart.items.map((i) =>
-      i.productId === productId ? { ...i, quantity } : i
+      i.productId === productId ? { ...i, quantity } : i,
     );
     await updateCartBackend(updatedItems);
   };
 
   const clearCart = async () => {
     const cartId = getCartId();
-    await axios.delete(`http://localhost:5162/api/Cart/${cartId}`);
+    await api.delete(`/api/Cart/${cartId}`);
     setCart({ id: cartId, items: [], totalPrice: 0 });
   };
 
@@ -110,7 +111,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const cartId = getCartId();
     const newCart = { id: cartId, items };
     try {
-      const res = await axios.post("http://localhost:5162/api/Cart", newCart);
+      const res = await api.post("/api/Cart", newCart);
       setCart(res.data);
     } catch (error) {
       console.error("Error updating cart", error);

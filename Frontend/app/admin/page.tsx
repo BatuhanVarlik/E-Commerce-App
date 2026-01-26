@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "@/lib/api";
 import { FaEye } from "react-icons/fa";
 
 interface Order {
@@ -28,13 +28,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          "http://localhost:5162/api/admin/dashboard",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await api.get("/api/admin/dashboard");
         setStats(response.data);
       } catch (err: any) {
         console.error("Dashboard verileri çekilemedi:", err);

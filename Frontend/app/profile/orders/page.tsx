@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
+import { api } from "@/lib/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,17 +39,14 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user && !localStorage.getItem("user")) {
+    if (!user) {
       router.push("/login");
       return;
     }
 
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5162/api/Orders", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get("/api/Orders");
         setOrders(response.data);
       } catch (error) {
         console.error("Siparişler getirilemedi:", error);
@@ -147,7 +144,7 @@ export default function OrdersPage() {
                         <span className="font-medium text-sm flex items-center gap-1">
                           <FaCalendarAlt className="text-gray-400" />
                           {new Date(order.orderDate).toLocaleDateString(
-                            "tr-TR"
+                            "tr-TR",
                           )}
                         </span>
                       </div>
@@ -168,8 +165,8 @@ export default function OrdersPage() {
                             order.status === "Paid"
                               ? "text-green-600"
                               : order.status === "Pending"
-                              ? "text-yellow-600"
-                              : "text-gray-600"
+                                ? "text-yellow-600"
+                                : "text-gray-600"
                           }`}
                         >
                           {order.status === "Paid" ? "Ödendi" : order.status}
