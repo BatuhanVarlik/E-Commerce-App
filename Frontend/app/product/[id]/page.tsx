@@ -6,9 +6,11 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { useWishlist } from "@/context/WishlistContext";
 import StarRating from "@/components/StarRating";
 import ReviewForm from "@/components/ReviewForm";
 import ReviewCard from "@/components/ReviewCard";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 interface ProductDetail {
   id: string;
@@ -43,6 +45,7 @@ export default function ProductDetailPage() {
   const { id } = useParams() as { id: string };
   const { addToCart } = useCart();
   const { user } = useAuth();
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const [product, setProduct] = useState<ProductDetail | null>(null);
   const [reviews, setReviews] = useState<ProductReviews | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,6 +53,7 @@ export default function ProductDetailPage() {
   const [adding, setAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const inWishlist = product ? isInWishlist(product.id) : false;
 
   useEffect(() => {
     if (!id) return;
@@ -120,7 +124,7 @@ export default function ProductDetailPage() {
     <div className="container mx-auto px-4 py-10">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
         {/* Image Section */}
-        <div className="relative h-96 w-full overflow-hidden rounded-lg bg-gray-100 lg:h-[500px]">
+        <div className="relative h-96 w-full overflow-hidden rounded-lg bg-gray-100 lg:h-125">
           <Image
             src={
               product.imageUrl.startsWith("http")
@@ -154,11 +158,11 @@ export default function ProductDetailPage() {
             </span>
           </div>
 
-          <div className="mt-10">
+          <div className="mt-10 flex gap-4">
             <button
               onClick={handleAddToCart}
               disabled={adding || isAdded}
-              className={`flex w-full items-center justify-center rounded-full px-10 py-4 text-lg font-bold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 lg:w-auto disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none ${
+              className={`flex-1 flex items-center justify-center rounded-full px-10 py-4 text-lg font-bold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none ${
                 isAdded
                   ? "bg-green-600 hover:bg-green-700 focus:ring-green-600"
                   : "bg-custom-red hover:bg-red-700 hover:-translate-y-1 hover:shadow-xl focus:ring-custom-red"
@@ -170,6 +174,20 @@ export default function ProductDetailPage() {
                   ? "Ekleniyor..."
                   : "Sepete Ekle"}
             </button>
+
+            {user && (
+              <button
+                onClick={() => toggleWishlist(product.id)}
+                className="flex items-center justify-center w-16 h-16 rounded-full bg-white border-2 border-gray-200 hover:border-custom-red hover:bg-red-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                title={inWishlist ? "Favorilerden Kaldır" : "Favorilere Ekle"}
+              >
+                {inWishlist ? (
+                  <FaHeart className="text-2xl text-custom-red" />
+                ) : (
+                  <FaRegHeart className="text-2xl text-gray-400 hover:text-custom-red" />
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>

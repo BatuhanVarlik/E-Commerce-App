@@ -292,3 +292,8 @@
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/DotNetEnv.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Sprache.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/ETicaret.API.staticwebassets.runtime.json
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Google.Apis.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Google.Apis.Auth.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/Google.Apis.Core.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/System.Management.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/bin/Debug/net8.0/runtimes/win/lib/net7.0/System.Management.dll

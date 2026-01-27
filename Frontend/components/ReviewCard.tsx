@@ -28,8 +28,7 @@ export default function ReviewCard({ review, onVote }: ReviewCardProps) {
 
     setVoting(true);
     try {
-      await api.post(`/api/Reviews/${review.id}/helpful`, {
-        reviewId: review.id,
+      await api.post(`/api/Reviews/${review.id}/vote`, {
         isHelpful,
       });
       setUserVote(isHelpful);

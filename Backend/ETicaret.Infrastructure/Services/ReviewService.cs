@@ -261,11 +261,25 @@ public class ReviewService : IReviewService
 
     private static ReviewDto MapToDto(Review review)
     {
+        var userName = "Anonim";
+        if (review.User != null)
+        {
+            // Eğer FirstName ve LastName varsa onları kullan
+            if (!string.IsNullOrEmpty(review.User.FirstName) && !string.IsNullOrEmpty(review.User.LastName))
+            {
+                userName = $"{review.User.FirstName} {review.User.LastName}";
+            }
+            else if (!string.IsNullOrEmpty(review.User.UserName))
+            {
+                userName = review.User.UserName;
+            }
+        }
+        
         return new ReviewDto
         {
             Id = review.Id.ToString(),
             UserId = review.UserId,
-            UserName = review.User?.UserName ?? "Anonim",
+            UserName = userName,
             ProductId = review.ProductId.ToString(),
             ProductName = review.Product?.Name,
             Rating = review.Rating,

@@ -18,6 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Review> Reviews { get; set; }
     public DbSet<ReviewHelpfulness> ReviewHelpfulness { get; set; }
     public DbSet<PasswordReset> PasswordResets { get; set; }
+    public DbSet<Wishlist> Wishlists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

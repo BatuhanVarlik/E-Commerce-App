@@ -11,7 +11,7 @@ public class CartItem
 
 public class CustomerCart
 {
-    public string Id { get; set; } // UserId or GuestId
+    public string Id { get; set; } = string.Empty; // UserId or GuestId
     public List<CartItem> Items { get; set; } = new();
 
     public CustomerCart() { }

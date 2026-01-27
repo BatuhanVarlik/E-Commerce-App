@@ -57,6 +57,7 @@ public static class DependencyInjection
         services.AddScoped<IOrderService, Services.OrderService>();
         services.AddScoped<IDashboardService, Services.DashboardService>();
         services.AddScoped<IReviewService, Services.ReviewService>();
+        services.AddScoped<IWishlistService, Services.WishlistService>();
         services.AddTransient<Services.DataSeeder>();
 
         // Redis Configuration

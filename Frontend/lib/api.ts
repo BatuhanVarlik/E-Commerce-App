@@ -87,6 +87,8 @@ export const authApi = {
 
   register: (data: RegisterData) => api.post("/api/Auth/register", data),
 
+  googleLogin: (idToken: string) => api.post("/api/Auth/google", { idToken }),
+
   forgotPassword: (email: string) =>
     api.post("/api/Auth/forgot-password", { email }),
 

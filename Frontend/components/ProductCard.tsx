@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useWishlist } from "@/context/WishlistContext";
+import { useAuth } from "@/context/AuthContext";
 
 interface ProductProps {
   id: string;
@@ -18,8 +21,31 @@ export default function ProductCard({
   imageUrl,
   categoryName,
 }: ProductProps) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  const inWishlist = isInWishlist(id);
+
+  const handleWishlistClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await toggleWishlist(id);
+  };
+
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-gray-100 hover:border-custom-light-gold">
+      {user && (
+        <button
+          onClick={handleWishlistClick}
+          className="absolute top-3 right-3 z-10 bg-white rounded-full p-2 shadow-md hover:scale-110 transition-transform"
+        >
+          {inWishlist ? (
+            <FaHeart className="text-custom-red text-xl" />
+          ) : (
+            <FaRegHeart className="text-gray-400 text-xl hover:text-custom-red" />
+          )}
+        </button>
+      )}
+
       <Link
         href={`/product/${id}`}
         className="relative h-64 w-full overflow-hidden bg-gray-50 flex items-center justify-center p-4"

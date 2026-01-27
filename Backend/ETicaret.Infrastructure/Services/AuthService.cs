@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Google.Apis.Auth;
 
 namespace ETicaret.Infrastructure.Services;
 
@@ -92,6 +93,97 @@ public class AuthService : IAuthService
             LastName = user.LastName,
             Role = "Customer"
         };
+    }
+
+    public async Task<AuthResponse> GoogleLoginAsync(GoogleLoginRequest request)
+    {
+        try
+        {
+            // Google Client ID'yi environment variable'dan al (appsettings.json'da env var adı var)
+            var googleClientIdVar = _configuration["Google:ClientId"]
+                ?? throw new InvalidOperationException("Google:ClientId configuration is required.");
+            
+            var googleClientId = Environment.GetEnvironmentVariable(googleClientIdVar)
+                ?? throw new InvalidOperationException($"{googleClientIdVar} environment variable is required. Check your .env file.");
+
+            // GÜVENLİK: ID Token'ı kriptografik olarak doğrula
+            // Bu, token'ın gerçekten Google'dan geldiğini ve manipüle edilmediğini garanti eder
+            GoogleJsonWebSignature.Payload payload;
+            try
+            {
+                payload = await GoogleJsonWebSignature.ValidateAsync(
+                    request.IdToken,
+                    new GoogleJsonWebSignature.ValidationSettings
+                    {
+                        Audience = new[] { googleClientId },
+                        // İsteğe bağlı: İlave güvenlik kontrolleri
+                        IssuedAtClockTolerance = TimeSpan.FromMinutes(5),
+                        ExpirationTimeClockTolerance = TimeSpan.FromMinutes(5)
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Google token doğrulama hatası: {ex.Message}");
+            }
+
+            if (payload == null || string.IsNullOrEmpty(payload.Email))
+            {
+                throw new Exception("Google kullanıcı bilgileri geçersiz.");
+            }
+
+            // Email doğrulamasını kontrol et
+            if (!payload.EmailVerified)
+            {
+                throw new Exception("Google hesabınızın email adresi doğrulanmamış.");
+            }
+
+            // Kullanıcıyı email ile bul
+            var user = await _userManager.FindByEmailAsync(payload.Email);
+
+            // Kullanıcı yoksa, yeni kullanıcı oluştur
+            if (user == null)
+            {
+                user = new User
+                {
+                    Email = payload.Email,
+                    UserName = payload.Email,
+                    FirstName = payload.GivenName ?? "Google",
+                    LastName = payload.FamilyName ?? "User",
+                    EmailConfirmed = true, // Google'dan gelen emailler doğrulanmış
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
+                    throw new Exception($"Google kullanıcısı oluşturulamadı: {errors}");
+                }
+
+                // Yeni kullanıcıya Customer rolü ata
+                await _userManager.AddToRoleAsync(user, "Customer");
+            }
+
+            // JWT token oluştur
+            var token = await GenerateJwtTokenAsync(user);
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault() ?? "Customer";
+
+            return new AuthResponse
+            {
+                Token = token,
+                Email = user.Email!,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = role
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Google girişi başarısız: {ex.Message}");
+        }
     }
 
     private async Task<string> GenerateJwtTokenAsync(User user)

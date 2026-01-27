@@ -56,21 +56,23 @@ Bu döküman, mevcut e-ticaret projesini modern, kullanıcı dostu ve rekabetçi
 
 ### Backend
 
-- [ ] Review entity oluşturma
-- [ ] Rating sistemi (1-5 yıldız)
-- [ ] Yorum CRUD operasyonları
-- [ ] Yorum moderasyonu (Admin onayı)
-- [ ] Yararlı/Yararsız oylama
-- [ ] Resim/Video ekleme desteği
+- [x] Review entity oluşturma
+- [x] Rating sistemi (1-5 yıldız)
+- [x] Yorum CRUD operasyonları
+- [x] Yorum moderasyonu (Admin onayı)
+- [x] Yararlı/Yararsız oylama
+- [x] Resim/Video ekleme desteği
 
 ### Frontend
 
-- [ ] Yorum yazma formu
-- [ ] Yıldız rating UI
-- [ ] Yorumları listeleme ve filtreleme
-- [ ] Resim galerisi
-- [ ] Yanıt sistemi
-- [ ] Yararlı butonları
+- [x] Yorum yazma formu
+- [x] Yıldız rating UI
+- [x] Yorumları listeleme ve filtreleme
+- [x] Resim galerisi
+- [x] Yanıt sistemi
+- [x] Yararlı butonları
+
+**Durum:** ✅ **Tamamlandı** - Review sistemi tam olarak çalışıyor
 
 **Tahmini Süre:** 4 gün
 
@@ -80,18 +82,20 @@ Bu döküman, mevcut e-ticaret projesini modern, kullanıcı dostu ve rekabetçi
 
 ### Backend
 
-- [ ] Wishlist entity ve ilişkiler
-- [ ] Wishlist CRUD API'leri
+- [x] Wishlist entity ve ilişkiler
+- [x] Wishlist CRUD API'leri
 - [ ] Fiyat düşüşü bildirimi
 - [ ] Stoka geldiğinde bildirim
 
 ### Frontend
 
-- [ ] Kalp ikonu (Favorilere ekle)
-- [ ] Wishlist sayfası
-- [ ] Sepete toplu ekleme
+- [x] Kalp ikonu (Favorilere ekle)
+- [x] Wishlist sayfası
+- [x] Sepete toplu ekleme
 - [ ] Paylaşma özelliği
 - [ ] Fiyat takibi göstergesi
+
+**Durum:** ✅ **Temel Özellikler Tamamlandı** - Wishlist sistemi çalışıyor, bildirim özellikleri gelecek fazlarda eklenecek
 
 **Tahmini Süre:** 3 gün
 

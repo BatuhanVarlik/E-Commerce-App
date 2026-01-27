@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 export default function Navbar() {
   const router = useRouter();
   const { user, logout } = useAuth();
   const { cart } = useCart();
+  const { wishlistCount } = useWishlist();
   const [search, setSearch] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
@@ -51,6 +53,20 @@ export default function Navbar() {
             >
               Ürünler
             </Link>
+
+            {user && (
+              <Link
+                href="/wishlist"
+                className="relative hover:text-custom-orange transition-colors"
+              >
+                <FaHeart className="text-xl" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-custom-red text-xs font-bold text-white">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+            )}
 
             <Link
               href="/cart"

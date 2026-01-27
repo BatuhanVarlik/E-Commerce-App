@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 import { useAuth } from "@/context/AuthContext";
 
@@ -43,6 +44,47 @@ export default function LoginPage() {
     }
   };
 
+  // GÜVENL İK: ID token ile çalışan handler
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
+    try {
+      setError("");
+
+      if (!credentialResponse.credential) {
+        throw new Error("Google credential alınamadı");
+      }
+
+      // Backend'e ID token gönder (kriptografik olarak doğrulanacak)
+      const response = await authApi.googleLogin(credentialResponse.credential);
+
+      // Context'e login yap
+      login(response.data);
+
+      if (response.data.role === "Admin") {
+        router.push("/admin");
+      } else {
+        router.push("/profile");
+      }
+    } catch (err: unknown) {
+      console.error("Google login error:", err);
+      if (err && typeof err === "object" && "response" in err) {
+        const axiosError = err as {
+          response?: { data?: { message?: string } };
+        };
+        setError(
+          axiosError.response?.data?.message || "Google ile giriş başarısız.",
+        );
+      } else {
+        setError("Google ile giriş sırasında bir hata oluştu.");
+      }
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError("Google ile giriş başarısız oldu.");
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
@@ -50,18 +92,21 @@ export default function LoginPage() {
           Giriş Yap
         </h2>
 
-        {/* Social Login Buttons - UI Only for now */}
+        {/* Social Login Buttons - GÜVENL İK: GoogleLogin component kullanıyor */}
         <div className="mb-6 flex flex-col gap-3">
-          <button
-            type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition"
-            onClick={() =>
-              alert("Google Girişi henüz yapılandırılmadı (API Key gerekli).")
-            }
-          >
-            <FcGoogle className="text-xl" />
-            Google ile Giriş Yap
-          </button>
+          {/* Google Login - ID token ile güvenli doğrulama */}
+          <div className="w-full flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap
+              text="signin_with"
+              size="large"
+              theme="outline"
+              shape="rectangular"
+            />
+          </div>
+
           <button
             type="button"
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition"
