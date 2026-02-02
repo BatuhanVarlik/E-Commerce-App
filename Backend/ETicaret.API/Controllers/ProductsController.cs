@@ -56,6 +56,18 @@ public class ProductsController : ControllerBase
         return Ok(new { suggestions = result });
     }
 
+    [HttpPost("compare")]
+    public async Task<IActionResult> CompareProducts([FromBody] CompareProductsRequest request)
+    {
+        if (request.ProductIds == null || request.ProductIds.Count < 2 || request.ProductIds.Count > 4)
+        {
+            return BadRequest(new { message = "2-4 arası ürün seçmelisiniz" });
+        }
+
+        var result = await _catalogService.CompareProductsAsync(request.ProductIds);
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {
@@ -63,3 +75,6 @@ public class ProductsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 }
+
+// Request DTOs
+public record CompareProductsRequest(List<Guid> ProductIds);

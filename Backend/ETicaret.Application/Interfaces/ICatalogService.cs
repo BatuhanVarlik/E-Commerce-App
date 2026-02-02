@@ -23,6 +23,7 @@ public interface ICatalogService
     Task<IEnumerable<ProductDto>> SearchProductsAsync(string query);
     Task<FilteredProductsResponseDto> GetFilteredProductsAsync(ProductFilterDto filter);
     Task<List<AutocompleteDto>> GetAutocompleteAsync(string query);
+    Task<List<ProductComparisonDto>> CompareProductsAsync(List<Guid> productIds);
     Task UpdateProductAsync(Guid id, CreateProductDto dto);
     Task DeleteProductAsync(Guid id);
 }

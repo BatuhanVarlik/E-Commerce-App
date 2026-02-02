@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useState } from "react";
+import { FaHeart, FaRegHeart, FaBolt } from "react-icons/fa";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAuth } from "@/context/AuthContext";
+import QuickBuyModal from "./QuickBuyModal";
 
 interface ProductProps {
   id: string;
@@ -24,11 +26,18 @@ export default function ProductCard({
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { user } = useAuth();
   const inWishlist = isInWishlist(id);
+  const [showQuickBuy, setShowQuickBuy] = useState(false);
 
   const handleWishlistClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     await toggleWishlist(id);
+  };
+
+  const handleQuickBuyClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowQuickBuy(true);
   };
 
   return (
@@ -77,11 +86,33 @@ export default function ProductCard({
           <p className="text-xl font-bold text-custom-red">
             {price.toLocaleString("tr-TR")} ₺
           </p>
-          <span className="text-xs font-medium text-gray-400 group-hover:text-custom-gold transition-colors">
-            İncele &rarr;
-          </span>
+          {user && (
+            <button
+              onClick={handleQuickBuyClick}
+              className="flex items-center gap-1 px-3 py-1.5 bg-custom-red text-white text-xs font-semibold rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              <FaBolt size={12} />
+              Hizli Al
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Quick Buy Modal */}
+      {showQuickBuy && (
+        <QuickBuyModal
+          productId={id}
+          productName={name}
+          productImage={imageUrl}
+          price={price}
+          onClose={() => setShowQuickBuy(false)}
+          onSuccess={() => {
+            setShowQuickBuy(false);
+            alert("Siparisiniz basariyla olusturuldu!");
+            window.location.href = "/profile/orders";
+          }}
+        />
+      )}
     </div>
   );
 }

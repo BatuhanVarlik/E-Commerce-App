@@ -6,6 +6,7 @@ public class Order : BaseEntity
 {
     public string UserId { get; set; } = string.Empty;
     public string UserEmail { get; set; } = string.Empty;
+    public string OrderNumber { get; set; } = string.Empty; // e.g., ORD-20240128-001
     public DateTime OrderDate { get; set; } = DateTime.UtcNow;
     
     public decimal TotalAmount { get; set; }

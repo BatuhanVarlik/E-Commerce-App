@@ -13,6 +13,8 @@ public class CustomerCart
 {
     public string Id { get; set; } = string.Empty; // UserId or GuestId
     public List<CartItem> Items { get; set; } = new();
+    public string? AppliedCouponCode { get; set; }
+    public decimal DiscountAmount { get; set; }
 
     public CustomerCart() { }
     public CustomerCart(string id)
@@ -20,5 +22,6 @@ public class CustomerCart
         Id = id;
     }
 
-    public decimal TotalPrice => Items.Sum(i => i.Price * i.Quantity);
+    public decimal Subtotal => Items.Sum(i => i.Price * i.Quantity);
+    public decimal TotalPrice => Subtotal - DiscountAmount;
 }

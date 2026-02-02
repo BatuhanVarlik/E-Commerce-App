@@ -27,7 +27,7 @@ export default function RegisterPage() {
 
     try {
       await authApi.register(formData);
-      router.push("/login?registered=true");
+      window.location.href = "/login?registered=true";
     } catch (err: unknown) {
       if (err && typeof err === "object" && "response" in err) {
         const axiosError = err as {

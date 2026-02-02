@@ -18,4 +18,12 @@ public class Product : BaseEntity
 
     public Guid BrandId { get; set; }
     public Brand Brand { get; set; } = null!;
+    
+    // Product Variants
+    public List<ProductVariant> Variants { get; set; } = new();
+    public List<VariantOption> VariantOptions { get; set; } = new();
+    public bool HasVariants => Variants.Any();
+    
+    // Reviews
+    public List<Review> Reviews { get; set; } = new();
 }

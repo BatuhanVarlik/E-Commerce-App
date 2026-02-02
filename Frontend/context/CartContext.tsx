@@ -11,11 +11,15 @@ export interface CartItem {
   price: number;
   quantity: number;
   imageUrl: string;
+  variantId?: string;
 }
 
 interface Cart {
   id: string;
   items: CartItem[];
+  appliedCouponCode?: string;
+  discountAmount: number;
+  subtotal: number;
   totalPrice: number;
 }
 
@@ -25,6 +29,8 @@ interface CartContextType {
   removeFromCart: (productId: string) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
+  applyCoupon: (code: string) => Promise<{ success: boolean; message: string }>;
+  removeCoupon: () => Promise<void>;
   loading: boolean;
 }
 
@@ -42,7 +48,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     let id = cookieStorage.get("guestId");
     if (!id) {
       id = "guest_" + Math.random().toString(36).substr(2, 9);
-      cookieStorage.set("guestId", id as string, { expires: 365 }); // 1 yıl geçerli
+      cookieStorage.set("guestId", id as string, { expires: 365 }); // 1 yil gecerli
     }
     setGuestId(id as string);
   }, []);
@@ -104,12 +110,84 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = async () => {
     const cartId = getCartId();
     await api.delete(`/api/Cart/${cartId}`);
-    setCart({ id: cartId, items: [], totalPrice: 0 });
+    setCart({
+      id: cartId,
+      items: [],
+      totalPrice: 0,
+      subtotal: 0,
+      discountAmount: 0,
+    });
   };
 
-  const updateCartBackend = async (items: CartItem[]) => {
+  const applyCoupon = async (code: string) => {
+    if (!cart) return { success: false, message: "Sepet bulunamadi" };
+
+    try {
+      const subtotal = cart.items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0,
+      );
+      const res = await api.post("/api/Coupon/apply", {
+        code,
+        cartTotal: subtotal,
+      });
+
+      if (res.data.isValid) {
+        const updatedCart = {
+          ...cart,
+          appliedCouponCode: code,
+          discountAmount: res.data.discountAmount,
+          subtotal,
+          totalPrice: subtotal - res.data.discountAmount,
+        };
+
+        // Update backend cart with coupon
+        await updateCartBackend(cart.items, code, res.data.discountAmount);
+
+        return { success: true, message: res.data.message };
+      } else {
+        return { success: false, message: res.data.message };
+      }
+    } catch (error: any) {
+      return {
+        success: false,
+        message:
+          error.response?.data?.message || "Kupon uygulanirken hata olustu",
+      };
+    }
+  };
+
+  const removeCoupon = async () => {
+    if (!cart) return;
+
+    const subtotal = cart.items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
+    const updatedCart = {
+      ...cart,
+      appliedCouponCode: undefined,
+      discountAmount: 0,
+      subtotal,
+      totalPrice: subtotal,
+    };
+
+    setCart(updatedCart);
+    await updateCartBackend(cart.items);
+  };
+
+  const updateCartBackend = async (
+    items: CartItem[],
+    couponCode?: string,
+    discountAmount?: number,
+  ) => {
     const cartId = getCartId();
-    const newCart = { id: cartId, items };
+    const newCart = {
+      id: cartId,
+      items,
+      appliedCouponCode: couponCode,
+      discountAmount: discountAmount || 0,
+    };
     try {
       const res = await api.post("/api/Cart", newCart);
       setCart(res.data);
@@ -126,6 +204,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         removeFromCart,
         updateQuantity,
         clearCart,
+        applyCoupon,
+        removeCoupon,
         loading,
       }}
     >

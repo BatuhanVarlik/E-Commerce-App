@@ -297,6 +297,60 @@ public class CatalogService : ICatalogService
         }
     }
 
+    public async Task<List<ProductComparisonDto>> CompareProductsAsync(List<Guid> productIds)
+    {
+        // Fetch products with related data
+        var products = await _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.Brand)
+            .Where(p => productIds.Contains(p.Id))
+            .ToListAsync();
+
+        // Get review stats for each product
+        var productReviews = await _context.Reviews
+            .Where(r => productIds.Contains(r.ProductId) && r.IsApproved)
+            .GroupBy(r => r.ProductId)
+            .Select(g => new
+            {
+                ProductId = g.Key,
+                AverageRating = g.Average(r => r.Rating),
+                ReviewCount = g.Count()
+            })
+            .ToListAsync();
+
+        // Use Dictionary for O(1) lookup instead of O(n)
+        var productDict = products.ToDictionary(p => p.Id);
+        var reviewDict = productReviews.ToDictionary(r => r.ProductId);
+
+        // Preserve order of requested productIds
+        var comparisonList = new List<ProductComparisonDto>();
+        
+        foreach (var productId in productIds)
+        {
+            if (!productDict.TryGetValue(productId, out var product))
+                continue;
+
+            reviewDict.TryGetValue(productId, out var reviewStats);
+
+            comparisonList.Add(new ProductComparisonDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Slug = product.Slug,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Stock = product.Stock,
+                CategoryName = product.Category?.Name ?? "",
+                BrandName = product.Brand?.Name ?? "",
+                Description = product.Description,
+                AverageRating = reviewStats?.AverageRating ?? 0,
+                ReviewCount = reviewStats?.ReviewCount ?? 0
+            });
+        }
+
+        return comparisonList;
+    }
+
     private static ProductDto MapProductToDto(Product p)
     {
         return new ProductDto

@@ -13,6 +13,11 @@ public class ProductDto
     public Guid CategoryId { get; set; }
     public string BrandName { get; set; } = string.Empty;
     public Guid BrandId { get; set; }
+    
+    // Variants
+    public bool HasVariants { get; set; }
+    public List<ProductVariantDto> Variants { get; set; } = new();
+    public List<VariantOptionDto> VariantOptions { get; set; } = new();
 }
 
 public class CreateProductDto

@@ -3,13 +3,50 @@
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
-import { FaTrash, FaMinus, FaPlus } from "react-icons/fa";
+import { FaTrash, FaMinus, FaPlus, FaTag, FaTimes } from "react-icons/fa";
+import { useState } from "react";
+import ShippingProgress from "@/components/ShippingProgress";
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart, loading } =
-    useCart();
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    applyCoupon,
+    removeCoupon,
+    loading,
+  } = useCart();
+  const [couponCode, setCouponCode] = useState("");
+  const [couponMessage, setCouponMessage] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
 
   if (loading) return <div className="p-10 text-center">Yükleniyor...</div>;
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponMessage("Lütfen kupon kodu girin");
+      return;
+    }
+
+    setCouponLoading(true);
+    setCouponMessage("");
+
+    const result = await applyCoupon(couponCode.trim());
+
+    setCouponLoading(false);
+    setCouponMessage(result.message);
+
+    if (result.success) {
+      setCouponCode("");
+      setTimeout(() => setCouponMessage(""), 3000);
+    }
+  };
+
+  const handleRemoveCoupon = async () => {
+    await removeCoupon();
+    setCouponMessage("");
+  };
 
   if (!cart || cart.items.length === 0) {
     return (
@@ -42,7 +79,7 @@ export default function CartPage() {
               key={item.productId}
               className="flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm"
             >
-              <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border bg-gray-50">
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-md border bg-gray-50">
                 <Image
                   src={
                     item.imageUrl.startsWith("http")
@@ -122,11 +159,81 @@ export default function CartPage() {
           <h2 className="mb-6 text-xl font-bold text-gray-900">
             Sipariş Özeti
           </h2>
-          <div className="flex justify-between border-b border-gray-100 pb-4 text-gray-600">
-            <span>Ara Toplam</span>
-            <span>{cart.totalPrice.toLocaleString("tr-TR")} ₺</span>
+
+          {/* Coupon Section */}
+          <div className="mb-6 space-y-3">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <FaTag className="text-custom-orange" />
+              İndirim Kuponu
+            </label>
+
+            {cart.appliedCouponCode ? (
+              <div className="flex items-center justify-between rounded-lg bg-green-50 border border-green-200 p-3">
+                <div>
+                  <p className="font-medium text-green-700">
+                    {cart.appliedCouponCode}
+                  </p>
+                  <p className="text-xs text-green-600">Kupon uygulandı</p>
+                </div>
+                <button
+                  onClick={handleRemoveCoupon}
+                  className="text-green-600 hover:text-green-800 transition-colors"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                  onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                  placeholder="Kupon kodunu girin"
+                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-custom-orange focus:outline-none focus:ring-1 focus:ring-custom-orange"
+                  disabled={couponLoading}
+                />
+                <button
+                  onClick={handleApplyCoupon}
+                  disabled={couponLoading}
+                  className="rounded-lg bg-custom-orange px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {couponLoading ? "..." : "Uygula"}
+                </button>
+              </div>
+            )}
+
+            {couponMessage && (
+              <p
+                className={`text-xs ${couponMessage.includes("başarı") ? "text-green-600" : "text-red-600"}`}
+              >
+                {couponMessage}
+              </p>
+            )}
           </div>
-          <div className="flex justify-between py-6 text-2xl font-bold text-gray-900">
+
+          {/* Shipping Progress */}
+          <div className="mb-6">
+            <ShippingProgress subtotal={cart.subtotal || cart.totalPrice} />
+          </div>
+
+          <div className="space-y-3 border-t border-gray-100 pt-4">
+            <div className="flex justify-between text-gray-600">
+              <span>Ara Toplam</span>
+              <span>
+                {(cart.subtotal || cart.totalPrice).toLocaleString("tr-TR")} ₺
+              </span>
+            </div>
+
+            {cart.discountAmount > 0 && (
+              <div className="flex justify-between text-green-600">
+                <span>İndirim</span>
+                <span>-{cart.discountAmount.toLocaleString("tr-TR")} ₺</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-between py-6 text-2xl font-bold text-gray-900 border-t border-gray-200 mt-3">
             <span>Toplam</span>
             <span className="text-custom-red">
               {cart.totalPrice.toLocaleString("tr-TR")} ₺
@@ -139,7 +246,6 @@ export default function CartPage() {
             Ödemeye Geç
           </Link>
           <div className="mt-6 flex justify-center opacity-60">
-            {/* Icons for payment methods could go here */}
             <span className="text-xs text-gray-400">
               Güvenli Ödeme Altyapısı
             </span>

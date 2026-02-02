@@ -16,15 +16,32 @@ public class CheckoutController : ControllerBase
 {
     private readonly ICartService _cartService;
     private readonly IPaymentService _paymentService;
+    private readonly IEmailService _emailService;
     private readonly ApplicationDbContext _context;
     private readonly UserManager<User> _userManager;
+    private readonly ILogger<CheckoutController> _logger;
 
-    public CheckoutController(ICartService cartService, IPaymentService paymentService, ApplicationDbContext context, UserManager<User> userManager)
+    public CheckoutController(
+        ICartService cartService, 
+        IPaymentService paymentService, 
+        IEmailService emailService,
+        ApplicationDbContext context, 
+        UserManager<User> userManager,
+        ILogger<CheckoutController> logger)
     {
         _cartService = cartService;
         _paymentService = paymentService;
+        _emailService = emailService;
         _context = context;
         _userManager = userManager;
+        _logger = logger;
+    }
+
+    private static string GenerateOrderNumber()
+    {
+        var date = DateTime.UtcNow.ToString("yyyyMMdd");
+        var random = new Random().Next(1000, 9999);
+        return $"ORD-{date}-{random}";
     }
 
     [HttpPost]
@@ -99,6 +116,7 @@ public class CheckoutController : ControllerBase
             {
                 UserId = user.Id,
                 UserEmail = user.Email!,
+                OrderNumber = GenerateOrderNumber(),
                 TotalAmount = cart.TotalPrice,
                 Status = "Paid",
                 PaymentId = paymentId,
@@ -112,7 +130,23 @@ public class CheckoutController : ControllerBase
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            // 5. Clear Cart
+            // 5. Send Order Confirmation Email
+            try
+            {
+                await _emailService.SendOrderConfirmationEmailAsync(
+                    user.Email!,
+                    order.OrderNumber,
+                    order.TotalAmount
+                );
+                _logger.LogInformation("Order confirmation email sent to {Email}", user.Email);
+            }
+            catch (Exception emailEx)
+            {
+                _logger.LogError(emailEx, "Failed to send order confirmation email to {Email}", user.Email);
+                // Don't fail the order if email fails
+            }
+
+            // 6. Clear Cart
             await _cartService.DeleteCartAsync(userEmail!);
 
             return Ok(new { OrderId = order.Id, Message = "Sipariş başarıyla oluşturuldu." });

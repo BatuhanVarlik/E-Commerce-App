@@ -2,7 +2,9 @@ import axios from "axios";
 import { cookieStorage } from "./cookieStorage";
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5162";
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5162";
+export const API_URL = API_BASE_URL;
 
 // Type definitions
 interface RegisterData {
@@ -137,6 +139,52 @@ export const ordersApi = {
 
   updateStatus: (id: string, status: string) =>
     api.put(`/api/admin/orders/${id}/status`, { status }),
+};
+
+export const couponApi = {
+  validate: (code: string, cartTotal: number) =>
+    api.post("/api/Coupon/validate", { code, cartTotal }),
+
+  apply: (code: string, cartTotal: number) =>
+    api.post("/api/Coupon/apply", { code, cartTotal }),
+
+  getActive: () => api.get("/api/Coupon/active"),
+
+  getHistory: () => api.get("/api/Coupon/history"),
+
+  // Admin endpoints
+  create: (data: {
+    code: string;
+    type: number;
+    value: number;
+    minimumAmount: number;
+    maxUsage: number;
+    startDate: string;
+    expiryDate: string;
+    categoryId?: string;
+    productId?: string;
+  }) => api.post("/api/Coupon", data),
+
+  getAll: () => api.get("/api/Coupon"),
+
+  getById: (id: string) => api.get(`/api/Coupon/${id}`),
+
+  update: (
+    id: string,
+    data: Partial<{
+      type: number;
+      value: number;
+      minimumAmount: number;
+      maxUsage: number;
+      startDate: string;
+      expiryDate: string;
+      isActive: boolean;
+      categoryId?: string;
+      productId?: string;
+    }>,
+  ) => api.put(`/api/Coupon/${id}`, data),
+
+  delete: (id: string) => api.delete(`/api/Coupon/${id}`),
 };
 
 export default api;

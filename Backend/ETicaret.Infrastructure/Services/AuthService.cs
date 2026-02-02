@@ -5,6 +5,7 @@ using ETicaret.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,17 +21,23 @@ public class AuthService : IAuthService
     private readonly SignInManager<User> _signInManager;
     private readonly IConfiguration _configuration;
     private readonly ApplicationDbContext _context;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<AuthService> _logger;
 
     public AuthService(
         UserManager<User> userManager, 
         SignInManager<User> signInManager, 
         IConfiguration configuration,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        IEmailService emailService,
+        ILogger<AuthService> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
         _context = context;
+        _emailService = emailService;
+        _logger = logger;
     }
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
@@ -82,6 +89,18 @@ public class AuthService : IAuthService
 
         // Assign default role
         await _userManager.AddToRoleAsync(user, "Customer");
+
+        // Send welcome email
+        try
+        {
+            await _emailService.SendWelcomeEmailAsync(user.Email, $"{user.FirstName} {user.LastName}");
+            _logger.LogInformation("Welcome email sent to {Email}", user.Email);
+        }
+        catch (Exception emailEx)
+        {
+            _logger.LogError(emailEx, "Failed to send welcome email to {Email}", user.Email);
+            // Don't fail registration if email fails
+        }
 
         var token = await GenerateJwtTokenAsync(user);
 

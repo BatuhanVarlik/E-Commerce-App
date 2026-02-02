@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import Link from "next/link";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash, FaPalette } from "react-icons/fa";
 import Image from "next/image";
 
 interface Product {
@@ -198,6 +198,13 @@ export default function AdminProductsPage() {
                   </span>
                 </td>
                 <td className="p-4 text-right space-x-2">
+                  <Link
+                    href={`/admin/products/${product.id}/variants`}
+                    className="inline-block text-purple-600 hover:text-purple-800 p-2"
+                    title="Varyantları Yönet"
+                  >
+                    <FaPalette size={18} />
+                  </Link>
                   <Link
                     href={`/admin/products/edit/${product.id}`}
                     className="inline-block text-blue-600 hover:text-blue-800 p-2"

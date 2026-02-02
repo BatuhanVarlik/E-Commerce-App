@@ -1,4 +1,5 @@
 using ETicaret.Infrastructure;
+using ETicaret.Infrastructure.Middleware;
 using Microsoft.OpenApi.Models;
 using DotNetEnv;
 
@@ -115,6 +116,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Security middleware'leri
+app.UseSecurityHeaders(); // XSS, CSRF protection, security headers
+app.UseRateLimiting();    // Rate limiting
+
 // Static files için wwwroot klasörünü aktifleştir
 app.UseStaticFiles();
 
@@ -122,6 +127,9 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Audit logging (auth'dan sonra user bilgisi alınabilir)
+app.UseAuditLogging();
 
 app.MapControllers();
 

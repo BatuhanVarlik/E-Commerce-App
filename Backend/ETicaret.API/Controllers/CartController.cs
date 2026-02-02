@@ -1,3 +1,4 @@
+using ETicaret.Application.DTOs;
 using ETicaret.Application.DTOs.Cart;
 using ETicaret.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -34,5 +35,19 @@ public class CartController : ControllerBase
     {
         await _cartService.DeleteCartAsync(id);
         return Ok();
+    }
+
+    [HttpPost("check-stock")]
+    public async Task<IActionResult> CheckStock([FromBody] StockCheckRequest request)
+    {
+        var result = await _cartService.CheckStockAvailabilityAsync(request.Items);
+        return Ok(result);
+    }
+
+    [HttpPost("calculate-shipping")]
+    public IActionResult CalculateShipping([FromBody] decimal cartSubtotal)
+    {
+        var result = _cartService.CalculateShipping(cartSubtotal);
+        return Ok(result);
     }
 }

@@ -4,6 +4,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { WishlistItem } from "@/context/WishlistContext";
@@ -13,6 +14,7 @@ export default function WishlistPage() {
   const { addToCart } = useCart();
   const { user } = useAuth();
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
 
   if (!user) {
     router.push("/login");
@@ -30,6 +32,17 @@ export default function WishlistPage() {
     alert("Ürün sepete eklendi!");
   };
 
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("URL kopyalanamadı:", err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -40,9 +53,32 @@ export default function WishlistPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">
-        Favorilerim ({wishlist.length})
-      </h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Favorilerim ({wishlist.length})
+        </h1>
+        {wishlist.length > 0 && (
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-2 bg-white border-2 border-custom-red text-custom-red px-4 py-2 rounded-lg hover:bg-custom-red hover:text-white transition"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+              />
+            </svg>
+            {copied ? "Kopyalandı!" : "Listeyi Paylaş"}
+          </button>
+        )}
+      </div>
 
       {wishlist.length === 0 ? (
         <div className="text-center py-16">

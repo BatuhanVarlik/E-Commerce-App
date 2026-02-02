@@ -1,15 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { defaultMetadata, defaultViewport } from "@/lib/seo";
+import {
+  JsonLd,
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+} from "@/lib/schema";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "E-Ticaret Projesi",
-  description: "En iyi ürünler burada.",
-};
+export const metadata: Metadata = defaultMetadata;
+export const viewport: Viewport = defaultViewport;
 
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
@@ -24,6 +28,10 @@ export default function RootLayout({
 
   return (
     <html lang="tr">
+      <head>
+        <JsonLd data={generateOrganizationSchema()} />
+        <JsonLd data={generateWebSiteSchema()} />
+      </head>
       <body className={inter.className} suppressHydrationWarning={true}>
         <GoogleOAuthProvider clientId={googleClientId}>
           <AuthProvider>

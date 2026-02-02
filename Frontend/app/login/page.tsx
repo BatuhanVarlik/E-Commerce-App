@@ -39,12 +39,12 @@ export default function LoginPage() {
         };
         setError(axiosError.response?.data?.message || "Giris basarisiz.");
       } else {
-        setError("Beklenmeyen bir hata oluştu.");
+        setError("Beklenmeyen bir hata olustu.");
       }
     }
   };
 
-  // GÜVENL İK: ID token ile çalışan handler
+  // GUVENLIK: ID token ile calisan handler
   const handleGoogleSuccess = async (
     credentialResponse: CredentialResponse,
   ) => {
@@ -52,10 +52,10 @@ export default function LoginPage() {
       setError("");
 
       if (!credentialResponse.credential) {
-        throw new Error("Google credential alınamadı");
+        throw new Error("Google credential alinamadi");
       }
 
-      // Backend'e ID token gönder (kriptografik olarak doğrulanacak)
+      // Backend'e ID token gonder (kriptografik olarak dogrulanacak)
       const response = await authApi.googleLogin(credentialResponse.credential);
 
       // Context'e login yap
@@ -73,16 +73,16 @@ export default function LoginPage() {
           response?: { data?: { message?: string } };
         };
         setError(
-          axiosError.response?.data?.message || "Google ile giriş başarısız.",
+          axiosError.response?.data?.message || "Google ile giris basarisiz.",
         );
       } else {
-        setError("Google ile giriş sırasında bir hata oluştu.");
+        setError("Google ile giris sirasinda bir hata olustu.");
       }
     }
   };
 
   const handleGoogleError = () => {
-    setError("Google ile giriş başarısız oldu.");
+    setError("Google ile giris basarisiz oldu.");
   };
 
   return (
@@ -92,9 +92,9 @@ export default function LoginPage() {
           Giriş Yap
         </h2>
 
-        {/* Social Login Buttons - GÜVENL İK: GoogleLogin component kullanıyor */}
+        {/* Social Login Buttons - GUVENLIK: GoogleLogin component kullaniyor */}
         <div className="mb-6 flex flex-col gap-3">
-          {/* Google Login - ID token ile güvenli doğrulama */}
+          {/* Google Login - ID token ile guvenli dogrulama */}
           <div className="w-full flex justify-center">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
@@ -111,11 +111,11 @@ export default function LoginPage() {
             type="button"
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition"
             onClick={() =>
-              alert("Apple Girişi henüz yapılandırılmadı (API Key gerekli).")
+              alert("Apple Girisi henuz yapilandirilmadi (API Key gerekli).")
             }
           >
             <FaApple className="text-xl text-black" />
-            Apple ile Giriş Yap
+            Apple ile Giris Yap
           </button>
         </div>
 
@@ -167,7 +167,7 @@ export default function LoginPage() {
               href="/forgot-password"
               className="text-sm text-blue-600 hover:underline"
             >
-              Şifremi Unuttum?
+              Sifremi Unuttum?
             </Link>
           </div>
 
@@ -175,7 +175,7 @@ export default function LoginPage() {
             type="submit"
             className="w-full rounded bg-blue-600 py-2 font-semibold text-white transition hover:bg-blue-700"
           >
-            Giriş Yap
+            Giris Yap
           </button>
         </form>
 

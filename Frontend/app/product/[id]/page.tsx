@@ -10,7 +10,12 @@ import { useWishlist } from "@/context/WishlistContext";
 import StarRating from "@/components/StarRating";
 import ReviewForm from "@/components/ReviewForm";
 import ReviewCard from "@/components/ReviewCard";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import VariantSelector from "@/components/VariantSelector";
+import SimilarProducts from "@/components/SimilarProducts";
+import FrequentlyBoughtTogether from "@/components/FrequentlyBoughtTogether";
+import QuickBuyModal from "@/components/QuickBuyModal";
+import { useViewTracking } from "@/hooks/useViewTracking";
+import { FaHeart, FaRegHeart, FaBolt } from "react-icons/fa";
 
 interface ProductDetail {
   id: string;
@@ -21,6 +26,25 @@ interface ProductDetail {
   imageUrl: string;
   categoryName: string;
   brandName: string;
+}
+
+interface ProductVariant {
+  id: string;
+  productId: string;
+  color?: string;
+  size?: string;
+  material?: string;
+  style?: string;
+  sku: string;
+  priceAdjustment?: number;
+  stockQuantity: number;
+  lowStockThreshold: number;
+  imageUrl?: string;
+  additionalImages: string[];
+  isActive: boolean;
+  isDefault: boolean;
+  weight?: number;
+  dimensions?: string;
 }
 
 interface Review {
@@ -53,7 +77,18 @@ export default function ProductDetailPage() {
   const [adding, setAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showQuickBuy, setShowQuickBuy] = useState(false);
   const inWishlist = product ? isInWishlist(product.id) : false;
+
+  // Track product view
+  useViewTracking(id);
+
+  // Variant state
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    null,
+  );
+  const [finalPrice, setFinalPrice] = useState(0);
+  const [displayImage, setDisplayImage] = useState<string>("");
 
   useEffect(() => {
     if (!id) return;
@@ -62,6 +97,8 @@ export default function ProductDetailPage() {
       try {
         const response = await api.get(`/api/Products/${id}`);
         setProduct(response.data);
+        setFinalPrice(response.data.price);
+        setDisplayImage(response.data.imageUrl);
       } catch (err) {
         console.error(err);
         setError(true);
@@ -83,6 +120,19 @@ export default function ProductDetailPage() {
     fetchReviews();
   }, [id]);
 
+  const handleVariantChange = (
+    variant: ProductVariant | null,
+    price: number,
+  ) => {
+    setSelectedVariant(variant);
+    setFinalPrice(price);
+    if (variant?.imageUrl) {
+      setDisplayImage(variant.imageUrl);
+    } else if (product?.imageUrl) {
+      setDisplayImage(product.imageUrl);
+    }
+  };
+
   const handleReviewSubmitted = async () => {
     // Refresh reviews after new review
     try {
@@ -101,9 +151,10 @@ export default function ProductDetailPage() {
       await addToCart({
         productId: product.id,
         productName: product.name,
-        price: product.price,
+        price: finalPrice,
         quantity: 1,
-        imageUrl: product.imageUrl,
+        imageUrl: displayImage || product.imageUrl,
+        variantId: selectedVariant?.id,
       });
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
@@ -127,8 +178,8 @@ export default function ProductDetailPage() {
         <div className="relative h-96 w-full overflow-hidden rounded-lg bg-gray-100 lg:h-125">
           <Image
             src={
-              product.imageUrl.startsWith("http")
-                ? product.imageUrl
+              (displayImage || product.imageUrl).startsWith("http")
+                ? displayImage || product.imageUrl
                 : `https://placehold.co/600?text=${product.name}`
             }
             alt={product.name}
@@ -151,44 +202,100 @@ export default function ProductDetailPage() {
 
           <div className="mt-8 flex items-baseline border-b border-gray-100 pb-8">
             <span className="text-4xl font-extrabold text-custom-red">
-              {product.price.toLocaleString("tr-TR")} ₺
+              {finalPrice.toLocaleString("tr-TR")} ₺
             </span>
+            {selectedVariant?.priceAdjustment !== 0 &&
+              selectedVariant?.priceAdjustment && (
+                <span className="ml-2 text-sm text-gray-500 line-through">
+                  {product.price.toLocaleString("tr-TR")} ₺
+                </span>
+              )}
             <span className="ml-4 text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded">
-              Stokta: {product.stock} adet
+              {selectedVariant
+                ? `Stokta: ${selectedVariant.stockQuantity} adet`
+                : `Stokta: ${product.stock} adet`}
             </span>
+          </div>
+
+          {/* Variant Selector */}
+          <div className="mt-6 border-b border-gray-100 pb-6">
+            <VariantSelector
+              productId={product.id}
+              basePrice={product.price}
+              onVariantChange={handleVariantChange}
+            />
           </div>
 
           <div className="mt-10 flex gap-4">
             <button
               onClick={handleAddToCart}
-              disabled={adding || isAdded}
+              disabled={
+                adding ||
+                isAdded ||
+                (selectedVariant !== null &&
+                  selectedVariant.stockQuantity === 0)
+              }
               className={`flex-1 flex items-center justify-center rounded-full px-10 py-4 text-lg font-bold text-white shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none ${
                 isAdded
                   ? "bg-green-600 hover:bg-green-700 focus:ring-green-600"
                   : "bg-custom-red hover:bg-red-700 hover:-translate-y-1 hover:shadow-xl focus:ring-custom-red"
               }`}
             >
-              {isAdded
-                ? "Sepete Eklendi"
-                : adding
-                  ? "Ekleniyor..."
-                  : "Sepete Ekle"}
+              {selectedVariant !== null && selectedVariant.stockQuantity === 0
+                ? "Stokta Yok"
+                : isAdded
+                  ? "Sepete Eklendi"
+                  : adding
+                    ? "Ekleniyor..."
+                    : "Sepete Ekle"}
             </button>
 
             {user && (
-              <button
-                onClick={() => toggleWishlist(product.id)}
-                className="flex items-center justify-center w-16 h-16 rounded-full bg-white border-2 border-gray-200 hover:border-custom-red hover:bg-red-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
-                title={inWishlist ? "Favorilerden Kaldır" : "Favorilere Ekle"}
-              >
-                {inWishlist ? (
-                  <FaHeart className="text-2xl text-custom-red" />
-                ) : (
-                  <FaRegHeart className="text-2xl text-gray-400 hover:text-custom-red" />
-                )}
-              </button>
+              <>
+                <button
+                  onClick={() => setShowQuickBuy(true)}
+                  disabled={
+                    selectedVariant !== null &&
+                    selectedVariant.stockQuantity === 0
+                  }
+                  className="flex items-center gap-2 px-6 py-4 rounded-full bg-orange-500 text-white font-bold shadow-lg hover:bg-orange-600 hover:-translate-y-1 hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                  title="Hizli Satin Al"
+                >
+                  <FaBolt size={20} />
+                  Hizli Al
+                </button>
+
+                <button
+                  onClick={() => toggleWishlist(product.id)}
+                  className="flex items-center justify-center w-16 h-16 rounded-full bg-white border-2 border-gray-200 hover:border-custom-red hover:bg-red-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                  title={inWishlist ? "Favorilerden Kaldır" : "Favorilere Ekle"}
+                >
+                  {inWishlist ? (
+                    <FaHeart className="text-2xl text-custom-red" />
+                  ) : (
+                    <FaRegHeart className="text-2xl text-gray-400 hover:text-custom-red" />
+                  )}
+                </button>
+              </>
             )}
           </div>
+
+          {/* Quick Buy Modal */}
+          {showQuickBuy && product && (
+            <QuickBuyModal
+              productId={product.id}
+              productName={product.name}
+              productImage={product.imageUrl}
+              price={finalPrice}
+              variantId={selectedVariant?.id}
+              onClose={() => setShowQuickBuy(false)}
+              onSuccess={() => {
+                setShowQuickBuy(false);
+                alert("Siparisiniz basariyla olusturuldu!");
+                window.location.href = "/profile/orders";
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -290,6 +397,15 @@ export default function ProductDetailPage() {
             )}
           </div>
         )}
+      </div>
+
+      {/* Recommendations */}
+      <div className="mt-16">
+        <SimilarProducts productId={id} />
+      </div>
+
+      <div className="mt-8">
+        <FrequentlyBoughtTogether productId={id} />
       </div>
     </div>
   );

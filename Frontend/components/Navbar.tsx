@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import { FaShoppingCart, FaHeart, FaTag } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import MiniCart from "./MiniCart";
 
 export default function Navbar() {
   const router = useRouter();
@@ -14,6 +15,8 @@ export default function Navbar() {
   const { cart } = useCart();
   const { wishlistCount } = useWishlist();
   const [search, setSearch] = useState("");
+  const [showMiniCart, setShowMiniCart] = useState(false);
+  const miniCartRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +27,26 @@ export default function Navbar() {
 
   const itemCount =
     cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
+
+  // Close mini cart when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        miniCartRef.current &&
+        !miniCartRef.current.contains(event.target as Node)
+      ) {
+        setShowMiniCart(false);
+      }
+    };
+
+    if (showMiniCart) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMiniCart]);
 
   return (
     <nav className="bg-white shadow">
@@ -39,7 +62,7 @@ export default function Navbar() {
           <form onSubmit={handleSearch} className="hidden md:block w-1/3">
             <input
               type="text"
-              placeholder="Ürün ara..."
+              placeholder="Urun ara..."
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-custom-orange focus:outline-none focus:ring-1 focus:ring-custom-orange"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -51,7 +74,15 @@ export default function Navbar() {
               href="/products"
               className="hover:text-custom-orange transition-colors"
             >
-              Ürünler
+              Urunler
+            </Link>
+
+            <Link
+              href="/coupons"
+              className="hover:text-custom-orange transition-colors flex items-center gap-1"
+            >
+              <FaTag />
+              <span className="hidden lg:inline">Kuponlar</span>
             </Link>
 
             {user && (
@@ -68,17 +99,23 @@ export default function Navbar() {
               </Link>
             )}
 
-            <Link
-              href="/cart"
-              className="relative hover:text-custom-orange transition-colors"
-            >
-              <FaShoppingCart className="text-xl" />
-              {itemCount > 0 && (
-                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-custom-red text-xs font-bold text-white">
-                  {itemCount}
-                </span>
+            <div className="relative" ref={miniCartRef}>
+              <button
+                onClick={() => setShowMiniCart(!showMiniCart)}
+                className="relative hover:text-custom-orange transition-colors"
+              >
+                <FaShoppingCart className="text-xl" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-custom-red text-xs font-bold text-white">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
+
+              {showMiniCart && (
+                <MiniCart onClose={() => setShowMiniCart(false)} />
               )}
-            </Link>
+            </div>
 
             {user ? (
               <div className="flex items-center gap-4">
@@ -94,13 +131,13 @@ export default function Navbar() {
                   href="/profile"
                   className="font-medium text-gray-900 hover:text-custom-orange hover:underline transition-colors"
                 >
-                  Hoşgeldin, {user.firstName}
+                  Hosgeldin, {user.firstName}
                 </Link>
                 <button
                   onClick={logout}
                   className="rounded bg-gray-100 px-4 py-2 text-gray-600 hover:bg-gray-200 transition-colors"
                 >
-                  Çıkış Yap
+                  Cikis Yap
                 </button>
               </div>
             ) : (
@@ -109,13 +146,13 @@ export default function Navbar() {
                   href="/login"
                   className="hover:text-custom-orange transition-colors"
                 >
-                  Giriş Yap
+                  Giris Yap
                 </Link>
                 <Link
                   href="/register"
                   className="rounded bg-custom-red px-4 py-2 text-white hover:brightness-90 transition-all shadow-md hover:shadow-lg"
                 >
-                  Kayıt Ol
+                  Kayit Ol
                 </Link>
               </>
             )}

@@ -21,8 +21,21 @@ public class DataSeeder
     {
         await SeedRolesAndUsersAsync();
 
-        if (_context.Products.Any()) return; // Already seeded
+        // Seed products only if they don't exist
+        if (!_context.Products.Any())
+        {
+            await SeedProductsAsync();
+        }
 
+        // Seed coupons separately (always check)
+        if (!_context.Coupons.Any())
+        {
+            await SeedCouponsAsync();
+        }
+    }
+
+    private async Task SeedProductsAsync()
+    {
         // Brands
         var apple = new Brand { Name = "Apple", Logo = "https://placehold.co/100" };
         var samsung = new Brand { Name = "Samsung", Logo = "https://placehold.co/100" };
@@ -70,6 +83,53 @@ public class DataSeeder
         };
 
         _context.Products.AddRange(p1, p2);
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task SeedCouponsAsync()
+    {
+        // Coupons - Test için örnek kuponlar
+        var coupons = new List<Coupon>
+        {
+            new Coupon
+            {
+                Code = "INDIRIM10",
+                Type = CouponType.Percentage,
+                Value = 10,
+                MinimumAmount = 1000,
+                MaxUsage = 100,
+                CurrentUsage = 0,
+                StartDate = DateTime.UtcNow.AddDays(-1),
+                ExpiryDate = DateTime.UtcNow.AddDays(30),
+                IsActive = true
+            },
+            new Coupon
+            {
+                Code = "YENI50",
+                Type = CouponType.FixedAmount,
+                Value = 50,
+                MinimumAmount = 500,
+                MaxUsage = 50,
+                CurrentUsage = 0,
+                StartDate = DateTime.UtcNow.AddDays(-1),
+                ExpiryDate = DateTime.UtcNow.AddDays(15),
+                IsActive = true
+            },
+            new Coupon
+            {
+                Code = "WELCOME100",
+                Type = CouponType.FixedAmount,
+                Value = 100,
+                MinimumAmount = 2000,
+                MaxUsage = 200,
+                CurrentUsage = 0,
+                StartDate = DateTime.UtcNow.AddDays(-1),
+                ExpiryDate = DateTime.UtcNow.AddDays(60),
+                IsActive = true
+            }
+        };
+
+        _context.Coupons.AddRange(coupons);
         await _context.SaveChangesAsync();
     }
 

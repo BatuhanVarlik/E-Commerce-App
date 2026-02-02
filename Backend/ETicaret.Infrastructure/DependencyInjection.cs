@@ -58,6 +58,16 @@ public static class DependencyInjection
         services.AddScoped<IDashboardService, Services.DashboardService>();
         services.AddScoped<IReviewService, Services.ReviewService>();
         services.AddScoped<IWishlistService, Services.WishlistService>();
+        services.AddScoped<ICouponService, Services.CouponService>();
+        services.AddScoped<IAlertService, Services.AlertService>();
+        services.AddScoped<IUserProfileService, Services.UserProfileService>();
+        services.AddScoped<IShippingService, Services.ShippingService>();
+        services.AddScoped<IEmailService, Services.EmailService>();
+        services.AddScoped<IRecommendationService, Services.RecommendationService>();
+        services.AddScoped<IAnalyticsService, Services.AnalyticsService>();
+        services.AddScoped<ICacheService, Services.CacheService>();
+        services.AddScoped<ISecurityService, Services.SecurityService>();
+        services.AddScoped<ITwoFactorAuthService, Services.TwoFactorAuthService>();
         services.AddTransient<Services.DataSeeder>();
 
         // Redis Configuration

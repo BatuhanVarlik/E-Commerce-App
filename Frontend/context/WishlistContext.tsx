@@ -52,7 +52,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
       const res = await api.get("/api/Wishlist");
       setWishlist(res.data.items || []);
     } catch (error) {
-      console.error("Wishlist yüklenemedi:", error);
+      console.error("Wishlist yuklenmedi:", error);
       setWishlist([]);
     } finally {
       setLoading(false);
@@ -65,7 +65,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   const addToWishlist = async (productId: string) => {
     if (!user) {
-      alert("Favorilere eklemek için giriş yapmalısınız");
+      alert("Favorilere eklemek icin giris yapmalisiniz");
       return;
     }
 
@@ -86,7 +86,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
       await api.delete(`/api/Wishlist/${productId}`);
       await fetchWishlist();
     } catch (error) {
-      console.error("Favorilerden kaldırılamadı:", error);
+      console.error("Favorilerden kaldirilmadi:", error);
     }
   };
 

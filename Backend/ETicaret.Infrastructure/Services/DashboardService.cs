@@ -39,6 +39,7 @@ public class DashboardService : IDashboardService
             .Select(o => new OrderDto
             {
                 Id = o.Id,
+                OrderNumber = o.OrderNumber,
                 OrderDate = o.OrderDate,
                 TotalAmount = o.TotalAmount,
                 Status = o.Status,
