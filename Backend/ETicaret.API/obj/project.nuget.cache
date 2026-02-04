@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l1bk9+/ySs0=",
+  "dgSpecHash": "U8e/SA56YhQ=",
   "success": true,
-  "projectFilePath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/ETicaret.API.csproj",
+  "projectFilePath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.API/ETicaret.API.csproj",
   "expectedPackageFiles": [
     "/Users/batu/.nuget/packages/dotnetenv/3.1.1/dotnetenv.3.1.1.nupkg.sha512",
     "/Users/batu/.nuget/packages/google.apis/1.73.0/google.apis.1.73.0.nupkg.sha512",

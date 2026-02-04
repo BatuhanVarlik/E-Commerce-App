@@ -9,6 +9,8 @@ import {
   generateOrganizationSchema,
   generateWebSiteSchema,
 } from "@/lib/schema";
+import { MobileHeader, MobileBottomNav } from "@/components/mobile";
+import { LiveChatWidget } from "@/components/chat/LiveChat";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,8 +39,22 @@ export default function RootLayout({
           <AuthProvider>
             <CartProvider>
               <WishlistProvider>
-                <Navbar />
-                {children}
+                {/* Desktop Navigation */}
+                <div className="hidden lg:block">
+                  <Navbar />
+                </div>
+
+                {/* Mobile Navigation */}
+                <MobileHeader />
+
+                {/* Main Content */}
+                <main className="lg:pt-0 pb-20 lg:pb-0">{children}</main>
+
+                {/* Mobile Bottom Navigation */}
+                <MobileBottomNav />
+
+                {/* Live Chat Widget - Tüm sayfalarda görünür */}
+                <LiveChatWidget />
               </WishlistProvider>
             </CartProvider>
           </AuthProvider>

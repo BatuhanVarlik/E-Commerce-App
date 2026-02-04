@@ -100,9 +100,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
         builder => builder
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:3000", "https://localhost:3000")
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 var app = builder.Build();
@@ -114,6 +115,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// CORS should be early in pipeline
+app.UseCors("AllowAll");
+
 app.UseHttpsRedirection();
 
 // Security middleware'leri
@@ -122,8 +126,6 @@ app.UseRateLimiting();    // Rate limiting
 
 // Static files için wwwroot klasörünü aktifleştir
 app.UseStaticFiles();
-
-app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

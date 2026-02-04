@@ -210,7 +210,8 @@ export default function CouponsPage() {
         </h2>
         <ul className="space-y-2 text-gray-600 text-sm">
           <li>
-            • Kupon kodunu sepet sayfasında &quot;İndirim Kuponu&quot; bölümüne girin
+            • Kupon kodunu sepet sayfasında &quot;İndirim Kuponu&quot; bölümüne
+            girin
           </li>
           <li>
             • Her kupon sadece belirtilen minimum tutarın üzerindeki

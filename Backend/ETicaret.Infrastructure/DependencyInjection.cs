@@ -68,6 +68,12 @@ public static class DependencyInjection
         services.AddScoped<ICacheService, Services.CacheService>();
         services.AddScoped<ISecurityService, Services.SecurityService>();
         services.AddScoped<ITwoFactorAuthService, Services.TwoFactorAuthService>();
+        services.AddScoped<IReferralService, Services.ReferralService>();
+        services.AddScoped<IPointsService, Services.PointsService>();
+        services.AddScoped<ISocialShareService, Services.SocialShareService>();
+        services.AddScoped<IChatService, Services.ChatService>();
+        services.AddScoped<IChatbotService, Services.ChatbotService>();
+        services.AddScoped<IChatAgentService, Services.ChatAgentService>();
         services.AddTransient<Services.DataSeeder>();
 
         // Redis Configuration

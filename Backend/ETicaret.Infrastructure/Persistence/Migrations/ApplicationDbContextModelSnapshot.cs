@@ -245,6 +245,264 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatAgent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ActiveChats")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("AverageRating")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("AverageResponseTime")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastActiveAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MaxConcurrentChats")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Specializations")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TotalChatsHandled")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsOnline")
+                        .HasDatabaseName("IX_ChatAgents_IsOnline");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ChatAgents_UserId");
+
+                    b.ToTable("ChatAgents");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AttachmentName")
+                        .HasColumnType("text");
+
+                    b.Property<long?>("AttachmentSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AttachmentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AttachmentUrl")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ChatRoomId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsFromAdmin")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsFromBot")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatRoomId")
+                        .HasDatabaseName("IX_ChatMessages_ChatRoomId");
+
+                    b.HasIndex("SenderId")
+                        .HasDatabaseName("IX_ChatMessages_SenderId");
+
+                    b.HasIndex("ChatRoomId", "CreatedAt")
+                        .HasDatabaseName("IX_ChatMessages_Room_CreatedAt");
+
+                    b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatRoom", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("AssignedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("AssignedToId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ClosingNote")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("GuestEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GuestName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastMessageAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MessageCount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("RelatedOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("RelatedProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("SatisfactionRating")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SessionId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedToId")
+                        .HasDatabaseName("IX_ChatRooms_AssignedToId");
+
+                    b.HasIndex("SessionId")
+                        .HasDatabaseName("IX_ChatRooms_SessionId");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_ChatRooms_Status");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_ChatRooms_UserId");
+
+                    b.HasIndex("Status", "Priority")
+                        .HasDatabaseName("IX_ChatRooms_Status_Priority");
+
+                    b.ToTable("ChatRooms");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatbotResponse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ActionData")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ActionType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Category")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("HitCount")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Keywords")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("QuickReplies")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Category")
+                        .HasDatabaseName("IX_ChatbotResponses_Category");
+
+                    b.HasIndex("IsActive")
+                        .HasDatabaseName("IX_ChatbotResponses_IsActive");
+
+                    b.ToTable("ChatbotResponses");
+                });
+
             modelBuilder.Entity("ETicaret.Domain.Entities.Coupon", b =>
                 {
                     b.Property<Guid>("Id")
@@ -538,6 +796,50 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                     b.ToTable("PasswordResets");
                 });
 
+            modelBuilder.Entity("ETicaret.Domain.Entities.PointTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ReferralId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_PointTransactions_CreatedAt");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_PointTransactions_UserId");
+
+                    b.HasIndex("UserId", "Type")
+                        .HasDatabaseName("IX_PointTransactions_User_Type");
+
+                    b.ToTable("PointTransactions");
+                });
+
             modelBuilder.Entity("ETicaret.Domain.Entities.PriceAlert", b =>
                 {
                     b.Property<Guid>("Id")
@@ -711,6 +1013,63 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("IX_ProductVariants_Sku");
 
                     b.ToTable("ProductVariants");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.Referral", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ClickCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ReferralCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("ReferredPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ReferredUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReferrerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ReferrerPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReferralCode")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Referrals_Code");
+
+                    b.HasIndex("ReferredUserId")
+                        .HasDatabaseName("IX_Referrals_ReferredUserId");
+
+                    b.HasIndex("ReferrerId")
+                        .HasDatabaseName("IX_Referrals_ReferrerId");
+
+                    b.HasIndex("ReferrerId", "Status")
+                        .HasDatabaseName("IX_Referrals_Referrer_Status");
+
+                    b.ToTable("Referrals");
                 });
 
             modelBuilder.Entity("ETicaret.Domain.Entities.Review", b =>
@@ -1111,6 +1470,46 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                     b.ToTable("UserCoupons");
                 });
 
+            modelBuilder.Entity("ETicaret.Domain.Entities.UserPoints", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Tier")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalEarned")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalSpent")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Tier")
+                        .HasDatabaseName("IX_UserPoints_Tier");
+
+                    b.HasIndex("TotalEarned")
+                        .HasDatabaseName("IX_UserPoints_TotalEarned");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UserPoints_UserId");
+
+                    b.ToTable("UserPoints");
+                });
+
             modelBuilder.Entity("ETicaret.Domain.Entities.UserPreferences", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1467,6 +1866,52 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatAgent", b =>
+                {
+                    b.HasOne("ETicaret.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatMessage", b =>
+                {
+                    b.HasOne("ETicaret.Domain.Entities.ChatRoom", "ChatRoom")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ETicaret.Domain.Entities.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("ChatRoom");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatRoom", b =>
+                {
+                    b.HasOne("ETicaret.Domain.Entities.User", "AssignedTo")
+                        .WithMany()
+                        .HasForeignKey("AssignedToId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ETicaret.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("AssignedTo");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ETicaret.Domain.Entities.Coupon", b =>
                 {
                     b.HasOne("ETicaret.Domain.Entities.Category", "Category")
@@ -1533,6 +1978,17 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ETicaret.Domain.Entities.PointTransaction", b =>
+                {
+                    b.HasOne("ETicaret.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ETicaret.Domain.Entities.PriceAlert", b =>
                 {
                     b.HasOne("ETicaret.Domain.Entities.Product", "Product")
@@ -1580,6 +2036,24 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.Referral", b =>
+                {
+                    b.HasOne("ETicaret.Domain.Entities.User", "ReferredUser")
+                        .WithMany()
+                        .HasForeignKey("ReferredUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ETicaret.Domain.Entities.User", "Referrer")
+                        .WithMany()
+                        .HasForeignKey("ReferrerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReferredUser");
+
+                    b.Navigation("Referrer");
                 });
 
             modelBuilder.Entity("ETicaret.Domain.Entities.Review", b =>
@@ -1687,6 +2161,17 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Coupon");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.UserPoints", b =>
+                {
+                    b.HasOne("ETicaret.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1821,6 +2306,11 @@ namespace ETicaret.Infrastructure.Persistence.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("ETicaret.Domain.Entities.ChatRoom", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("ETicaret.Domain.Entities.Coupon", b =>

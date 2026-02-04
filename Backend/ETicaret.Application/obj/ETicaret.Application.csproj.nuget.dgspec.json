@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj": {}
+    "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj": {}
   },
   "projects": {
-    "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj": {
+    "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj",
+        "projectUniqueName": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj",
         "projectName": "ETicaret.Application",
-        "projectPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj",
+        "projectPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj",
         "packagesPath": "/Users/batu/.nuget/packages/",
-        "outputPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/obj/",
+        "outputPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/batu/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj": {
-                "projectPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj"
+              "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj": {
+                "projectPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj"
               }
             }
           }
@@ -73,14 +73,14 @@
         }
       }
     },
-    "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj": {
+    "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj",
+        "projectUniqueName": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj",
         "projectName": "ETicaret.Domain",
-        "projectPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj",
+        "projectPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/ETicaret.Domain.csproj",
         "packagesPath": "/Users/batu/.nuget/packages/",
-        "outputPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/obj/",
+        "outputPath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/batu/.nuget/NuGet/NuGet.Config"

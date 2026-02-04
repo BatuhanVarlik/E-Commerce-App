@@ -170,8 +170,13 @@ public class SecurityHeadersMiddleware
         // Security headers ekle
         AddSecurityHeaders(context.Response);
 
-        // POST, PUT, PATCH isteklerinde içerik kontrolü
-        if (IsContentCheckRequired(context.Request.Method))
+        // File upload endpoint'lerini kontrol dışı bırak
+        var path = context.Request.Path.Value?.ToLower() ?? "";
+        var isFileUpload = path.Contains("/upload") || 
+                          context.Request.ContentType?.Contains("multipart/form-data") == true;
+
+        // POST, PUT, PATCH isteklerinde içerik kontrolü (file upload hariç)
+        if (IsContentCheckRequired(context.Request.Method) && !isFileUpload)
         {
             // Request body'yi oku ve kontrol et
             context.Request.EnableBuffering();

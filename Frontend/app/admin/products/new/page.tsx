@@ -135,7 +135,12 @@ export default function NewProductPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "stock" ? parseFloat(value) : value,
+      [name]:
+        name === "price" || name === "stock"
+          ? value === ""
+            ? 0
+            : parseFloat(value) || 0
+          : value,
     }));
   };
 

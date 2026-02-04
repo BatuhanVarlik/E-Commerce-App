@@ -37,6 +37,17 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<TwoFactorAuth> TwoFactorAuths { get; set; }
     public DbSet<IpBlacklist> IpBlacklists { get; set; }
     public DbSet<IpWhitelist> IpWhitelists { get; set; }
+    
+    // Social entities
+    public DbSet<Referral> Referrals { get; set; }
+    public DbSet<UserPoints> UserPoints { get; set; }
+    public DbSet<PointTransaction> PointTransactions { get; set; }
+    
+    // Chat entities
+    public DbSet<ChatRoom> ChatRooms { get; set; }
+    public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<ChatbotResponse> ChatbotResponses { get; set; }
+    public DbSet<ChatAgent> ChatAgents { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -292,5 +303,174 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .WithMany()
             .HasForeignKey(i => i.AddedByUserId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        // ==================== SOCIAL INDEXES ====================
+        
+        // Referral indexes
+        builder.Entity<Referral>()
+            .HasIndex(r => r.ReferralCode)
+            .IsUnique()
+            .HasDatabaseName("IX_Referrals_Code");
+        
+        builder.Entity<Referral>()
+            .HasIndex(r => r.ReferrerId)
+            .HasDatabaseName("IX_Referrals_ReferrerId");
+        
+        builder.Entity<Referral>()
+            .HasIndex(r => r.ReferredUserId)
+            .HasDatabaseName("IX_Referrals_ReferredUserId");
+        
+        builder.Entity<Referral>()
+            .HasIndex(r => new { r.ReferrerId, r.Status })
+            .HasDatabaseName("IX_Referrals_Referrer_Status");
+
+        // UserPoints indexes
+        builder.Entity<UserPoints>()
+            .HasIndex(up => up.UserId)
+            .IsUnique()
+            .HasDatabaseName("IX_UserPoints_UserId");
+        
+        builder.Entity<UserPoints>()
+            .HasIndex(up => up.TotalEarned)
+            .HasDatabaseName("IX_UserPoints_TotalEarned");
+        
+        builder.Entity<UserPoints>()
+            .HasIndex(up => up.Tier)
+            .HasDatabaseName("IX_UserPoints_Tier");
+
+        // PointTransaction indexes
+        builder.Entity<PointTransaction>()
+            .HasIndex(pt => pt.UserId)
+            .HasDatabaseName("IX_PointTransactions_UserId");
+        
+        builder.Entity<PointTransaction>()
+            .HasIndex(pt => pt.CreatedAt)
+            .HasDatabaseName("IX_PointTransactions_CreatedAt");
+        
+        builder.Entity<PointTransaction>()
+            .HasIndex(pt => new { pt.UserId, pt.Type })
+            .HasDatabaseName("IX_PointTransactions_User_Type");
+
+        // ==================== CHAT INDEXES ====================
+        
+        // ChatRoom indexes
+        builder.Entity<ChatRoom>()
+            .HasIndex(cr => cr.UserId)
+            .HasDatabaseName("IX_ChatRooms_UserId");
+        
+        builder.Entity<ChatRoom>()
+            .HasIndex(cr => cr.AssignedToId)
+            .HasDatabaseName("IX_ChatRooms_AssignedToId");
+        
+        builder.Entity<ChatRoom>()
+            .HasIndex(cr => cr.Status)
+            .HasDatabaseName("IX_ChatRooms_Status");
+        
+        builder.Entity<ChatRoom>()
+            .HasIndex(cr => cr.SessionId)
+            .HasDatabaseName("IX_ChatRooms_SessionId");
+        
+        builder.Entity<ChatRoom>()
+            .HasIndex(cr => new { cr.Status, cr.Priority })
+            .HasDatabaseName("IX_ChatRooms_Status_Priority");
+
+        // ChatMessage indexes
+        builder.Entity<ChatMessage>()
+            .HasIndex(cm => cm.ChatRoomId)
+            .HasDatabaseName("IX_ChatMessages_ChatRoomId");
+        
+        builder.Entity<ChatMessage>()
+            .HasIndex(cm => cm.SenderId)
+            .HasDatabaseName("IX_ChatMessages_SenderId");
+        
+        builder.Entity<ChatMessage>()
+            .HasIndex(cm => new { cm.ChatRoomId, cm.CreatedAt })
+            .HasDatabaseName("IX_ChatMessages_Room_CreatedAt");
+
+        // ChatbotResponse indexes
+        builder.Entity<ChatbotResponse>()
+            .HasIndex(cbr => cbr.Category)
+            .HasDatabaseName("IX_ChatbotResponses_Category");
+        
+        builder.Entity<ChatbotResponse>()
+            .HasIndex(cbr => cbr.IsActive)
+            .HasDatabaseName("IX_ChatbotResponses_IsActive");
+
+        // ChatAgent indexes
+        builder.Entity<ChatAgent>()
+            .HasIndex(ca => ca.UserId)
+            .IsUnique()
+            .HasDatabaseName("IX_ChatAgents_UserId");
+        
+        builder.Entity<ChatAgent>()
+            .HasIndex(ca => ca.IsOnline)
+            .HasDatabaseName("IX_ChatAgents_IsOnline");
+
+        // ==================== SOCIAL RELATIONSHIPS ====================
+        
+        // Referral -> Referrer User
+        builder.Entity<Referral>()
+            .HasOne(r => r.Referrer)
+            .WithMany()
+            .HasForeignKey(r => r.ReferrerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Referral -> Referred User (optional)
+        builder.Entity<Referral>()
+            .HasOne(r => r.ReferredUser)
+            .WithMany()
+            .HasForeignKey(r => r.ReferredUserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // UserPoints -> User
+        builder.Entity<UserPoints>()
+            .HasOne(up => up.User)
+            .WithMany()
+            .HasForeignKey(up => up.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // PointTransaction -> User
+        builder.Entity<PointTransaction>()
+            .HasOne(pt => pt.User)
+            .WithMany()
+            .HasForeignKey(pt => pt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // ==================== CHAT RELATIONSHIPS ====================
+        
+        // ChatRoom -> User (Customer)
+        builder.Entity<ChatRoom>()
+            .HasOne(cr => cr.User)
+            .WithMany()
+            .HasForeignKey(cr => cr.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // ChatRoom -> User (Assigned Agent)
+        builder.Entity<ChatRoom>()
+            .HasOne(cr => cr.AssignedTo)
+            .WithMany()
+            .HasForeignKey(cr => cr.AssignedToId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // ChatRoom -> Messages
+        builder.Entity<ChatRoom>()
+            .HasMany(cr => cr.Messages)
+            .WithOne(cm => cm.ChatRoom)
+            .HasForeignKey(cm => cm.ChatRoomId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // ChatMessage -> Sender
+        builder.Entity<ChatMessage>()
+            .HasOne(cm => cm.Sender)
+            .WithMany()
+            .HasForeignKey(cm => cm.SenderId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        // ChatAgent -> User
+        builder.Entity<ChatAgent>()
+            .HasOne(ca => ca.User)
+            .WithMany()
+            .HasForeignKey(ca => ca.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

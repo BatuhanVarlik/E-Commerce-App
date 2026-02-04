@@ -132,7 +132,7 @@ export default function AddressesPage() {
       handleCloseModal();
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || 'İşlem başarısız');
+      setError(error.response?.data?.message || "İşlem başarısız");
     }
   };
 
@@ -145,7 +145,7 @@ export default function AddressesPage() {
       fetchAddresses();
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || 'Adres silinemedi');
+      setError(error.response?.data?.message || "Adres silinemedi");
     }
   };
 
@@ -156,7 +156,7 @@ export default function AddressesPage() {
       fetchAddresses();
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || 'İşlem başarısız');
+      setError(error.response?.data?.message || "İşlem başarısız");
     }
   };
 
