@@ -1,5 +1,6 @@
 using ETicaret.Application.DTOs.Product;
 using ETicaret.Application.Interfaces;
+using ETicaret.Infrastructure.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ETicaret.API.Controllers;
@@ -16,6 +17,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
+    [CacheResponse(DurationSeconds = 300, KeyPrefix = "products")] // 5 dakika cache
     public async Task<IActionResult> GetAll()
     {
         var result = await _catalogService.GetProductsAsync();
@@ -23,6 +25,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [CacheResponse(DurationSeconds = 600, KeyPrefix = "product")] // 10 dakika cache
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _catalogService.GetProductByIdAsync(id);
@@ -31,6 +34,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("search")]
+    [CacheResponse(DurationSeconds = 120, KeyPrefix = "search")] // 2 dakika cache
     public async Task<IActionResult> Search([FromQuery] string q)
     {
         var result = await _catalogService.SearchProductsAsync(q);
@@ -38,6 +42,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("filter")]
+    [CacheResponse(DurationSeconds = 180, KeyPrefix = "filter", VaryByQueryParams = new[] { "categoryId", "brandId", "minPrice", "maxPrice", "sortBy", "page", "pageSize" })]
     public async Task<IActionResult> GetFiltered([FromQuery] ProductFilterDto filter)
     {
         var result = await _catalogService.GetFilteredProductsAsync(filter);
@@ -45,6 +50,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("autocomplete")]
+    [CacheResponse(DurationSeconds = 60, KeyPrefix = "autocomplete")] // 1 dakika cache
     public async Task<IActionResult> Autocomplete([FromQuery] string q)
     {
         if (string.IsNullOrWhiteSpace(q) || q.Length < 2)
@@ -69,6 +75,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
+    [InvalidateCache("products:*", "filter:*")] // Yeni ürün eklenince cache temizle
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {
         var result = await _catalogService.CreateProductAsync(dto);

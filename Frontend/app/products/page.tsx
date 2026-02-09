@@ -3,9 +3,16 @@
 import { useEffect, useState, useCallback } from "react";
 import { api } from "@/lib/api";
 import { useSearchParams, useRouter } from "next/navigation";
-import ProductCard from "@/components/ProductCard";
+import ModernProductCard from "@/components/ModernProductCard";
 import { Suspense } from "react";
-import Image from "next/image";
+import {
+  FiGrid,
+  FiList,
+  FiFilter,
+  FiX,
+  FiChevronDown,
+  FiSearch,
+} from "react-icons/fi";
 
 interface Product {
   id: string;
@@ -125,13 +132,20 @@ function CategoryFilter({
   return (
     <div>
       <div
-        className={`flex items-center justify-between cursor-pointer rounded p-2 hover:bg-gray-100 ${
-          isSelected ? "bg-blue-50 text-blue-600 font-medium" : ""
+        className={`flex items-center justify-between cursor-pointer rounded-lg px-3 py-2 transition-colors ${
+          isSelected
+            ? "bg-gray-900 text-white"
+            : "hover:bg-gray-100 text-gray-700"
         }`}
-        style={{ paddingLeft: `${level * 12 + 8}px` }}
+        style={{ paddingLeft: `${level * 12 + 12}px` }}
       >
-        <div className="flex-1" onClick={() => onSelect(category.id)}>
-          {category.name} ({category.productCount})
+        <div className="flex-1 text-sm" onClick={() => onSelect(category.id)}>
+          {category.name}
+          <span
+            className={`ml-1 ${isSelected ? "text-gray-300" : "text-gray-400"}`}
+          >
+            ({category.productCount})
+          </span>
         </div>
         {hasSubCategories && (
           <button
@@ -139,21 +153,13 @@ function CategoryFilter({
               e.stopPropagation();
               setIsOpen(!isOpen);
             }}
-            className="ml-2 p-1 hover:bg-gray-200 rounded"
+            className={`ml-2 p-1 rounded transition-colors ${
+              isSelected ? "hover:bg-gray-800" : "hover:bg-gray-200"
+            }`}
           >
-            <svg
-              className={`w-4 h-4 transition-transform ${isOpen ? "rotate-90" : ""}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <FiChevronDown
+              className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            />
           </button>
         )}
       </div>
@@ -287,11 +293,50 @@ function ProductsContent() {
 
   if (loading || !data) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-80 animate-pulse rounded bg-gray-200" />
-          ))}
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header Skeleton */}
+          <div className="mb-8">
+            <div className="h-8 w-64 bg-gray-200 rounded animate-pulse mb-2"></div>
+            <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+
+          <div className="flex gap-8">
+            {/* Sidebar Skeleton */}
+            <div className="hidden lg:block w-72 shrink-0">
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <div className="space-y-6">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i}>
+                      <div className="h-4 w-20 bg-gray-200 rounded animate-pulse mb-3"></div>
+                      <div className="space-y-2">
+                        <div className="h-10 bg-gray-100 rounded animate-pulse"></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Products Skeleton */}
+            <div className="flex-1">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
+                {Array.from({ length: 9 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-xl overflow-hidden shadow-sm"
+                  >
+                    <div className="aspect-square bg-gray-200 animate-pulse"></div>
+                    <div className="p-4">
+                      <div className="h-3 w-16 bg-gray-200 rounded animate-pulse mb-2"></div>
+                      <div className="h-4 w-full bg-gray-200 rounded animate-pulse mb-2"></div>
+                      <div className="h-5 w-20 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -306,414 +351,393 @@ function ProductsContent() {
     filters.inStock;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-800">
-          {filters.searchQuery
-            ? `"${filters.searchQuery}" için arama sonuçları`
-            : "Tüm Ürünler"}
-        </h1>
-        <div className="flex gap-2">
-          {/* View Mode Toggle */}
-          <div className="hidden sm:flex items-center gap-1 rounded bg-gray-200 p-1">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`p-2 rounded transition ${
-                viewMode === "grid" ? "bg-white shadow" : "hover:bg-gray-300"
-              }`}
-              title="Grid görünümü"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={`p-2 rounded transition ${
-                viewMode === "list" ? "bg-white shadow" : "hover:bg-gray-300"
-              }`}
-              title="Liste görünümü"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300 lg:hidden"
-          >
-            {showFilters ? "Filtreleri Gizle" : "Filtreler"}
-          </button>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+            {filters.searchQuery
+              ? `"${filters.searchQuery}" için sonuçlar`
+              : "Tüm Ürünler"}
+          </h1>
+          <p className="mt-1 text-gray-500">{data.totalCount} ürün bulundu</p>
         </div>
-      </div>
 
-      <div className="flex gap-6">
-        {/* Filtreler Sidebar */}
-        <aside
-          className={`${showFilters ? "block" : "hidden"} lg:block w-full lg:w-64`}
-        >
-          <div className="rounded-lg bg-white p-4 shadow space-y-4">
-            <h3 className="text-lg font-bold">Filtreler</h3>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium">Ara</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  className="w-full rounded border p-2"
-                  placeholder="Ürün ara..."
-                  value={filters.searchQuery}
-                  onChange={(e) => {
-                    updateFilter("searchQuery", e.target.value);
-                    fetchSuggestions(e.target.value);
-                    setShowSuggestions(true);
-                  }}
-                  onFocus={() => setShowSuggestions(true)}
-                  onBlur={() =>
-                    setTimeout(() => setShowSuggestions(false), 200)
-                  }
-                />
-
-                {/* Autocomplete Dropdown */}
-                {showSuggestions &&
-                  (searchSuggestions.length > 0 ||
-                    searchHistory.length > 0) && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-64 overflow-y-auto">
-                      {searchHistory.length > 0 && !filters.searchQuery && (
-                        <div className="p-2 border-b">
-                          <div className="text-xs text-gray-500 mb-1">
-                            Son Aramalar
-                          </div>
-                          {searchHistory.map((term, idx) => (
-                            <button
-                              key={idx}
-                              className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm flex items-center gap-2"
-                              onClick={() => {
-                                updateFilter("searchQuery", term);
-                                setShowSuggestions(false);
-                              }}
-                            >
-                              <svg
-                                className="w-4 h-4 text-gray-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                              {term}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-
-                      {searchSuggestions.length > 0 && (
-                        <div className="p-2">
-                          <div className="text-xs text-gray-500 mb-1">
-                            Öneriler
-                          </div>
-                          {searchSuggestions.map((suggestion, idx) => (
-                            <button
-                              key={idx}
-                              className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm flex items-center gap-2"
-                              onClick={() => {
-                                updateFilter("searchQuery", suggestion.text);
-                                setShowSuggestions(false);
-                              }}
-                            >
-                              {suggestion.type === "product" && (
-                                <svg
-                                  className="w-4 h-4 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                                  />
-                                </svg>
-                              )}
-                              {suggestion.type === "category" && (
-                                <svg
-                                  className="w-4 h-4 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                                  />
-                                </svg>
-                              )}
-                              {suggestion.type === "brand" && (
-                                <svg
-                                  className="w-4 h-4 text-gray-400"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                                  />
-                                </svg>
-                              )}
-                              <div className="flex-1">
-                                <span>{suggestion.text}</span>
-                                <span className="ml-2 text-xs text-gray-400 capitalize">
-                                  ({suggestion.type})
-                                </span>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-              </div>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium">Kategori</label>
-              <div className="space-y-1 max-h-96 overflow-y-auto">
-                <div
-                  className={`cursor-pointer rounded p-2 hover:bg-gray-100 ${
-                    !filters.categoryId
-                      ? "bg-blue-50 text-blue-600 font-medium"
-                      : ""
-                  }`}
-                  onClick={() => updateFilter("categoryId", "")}
-                >
-                  Tüm Kategoriler
-                </div>
-                {data.filterOptions.categories.map((cat) => (
-                  <CategoryFilter
-                    key={cat.id}
-                    category={cat}
-                    selectedId={filters.categoryId}
-                    onSelect={(id) => updateFilter("categoryId", id)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium">Marka</label>
-              <select
-                className="w-full rounded border p-2"
-                value={filters.brandId}
-                onChange={(e) => updateFilter("brandId", e.target.value)}
+        <div className="flex gap-8">
+          {/* Filters Sidebar */}
+          <aside
+            className={`
+              ${showFilters ? "fixed inset-0 z-50 bg-white p-6 overflow-y-auto lg:relative lg:inset-auto lg:z-auto lg:bg-transparent lg:p-0" : "hidden"}
+              lg:block w-full lg:w-72 shrink-0
+            `}
+          >
+            {/* Mobile Filter Header */}
+            <div className="flex items-center justify-between mb-6 lg:hidden">
+              <h2 className="text-lg font-bold text-gray-900">Filtreler</h2>
+              <button
+                onClick={() => setShowFilters(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg"
               >
-                <option value="">Tüm Markalar</option>
-                {data.filterOptions.brands.map((brand) => (
-                  <option key={brand.id} value={brand.id}>
-                    {brand.name} ({brand.productCount})
-                  </option>
-                ))}
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-sm space-y-6">
+              {/* Search */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Ara
+                </label>
+                <div className="relative">
+                  <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    placeholder="Ürün ara..."
+                    value={filters.searchQuery}
+                    onChange={(e) => {
+                      updateFilter("searchQuery", e.target.value);
+                      fetchSuggestions(e.target.value);
+                      setShowSuggestions(true);
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() =>
+                      setTimeout(() => setShowSuggestions(false), 200)
+                    }
+                  />
+
+                  {/* Autocomplete Dropdown */}
+                  {showSuggestions &&
+                    (searchSuggestions.length > 0 ||
+                      searchHistory.length > 0) && (
+                      <div className="absolute z-20 w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl max-h-64 overflow-y-auto">
+                        {searchHistory.length > 0 && !filters.searchQuery && (
+                          <div className="p-3 border-b border-gray-100">
+                            <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                              Son Aramalar
+                            </div>
+                            {searchHistory.map((term, idx) => (
+                              <button
+                                key={idx}
+                                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg text-sm text-gray-700 transition-colors"
+                                onClick={() => {
+                                  updateFilter("searchQuery", term);
+                                  setShowSuggestions(false);
+                                }}
+                              >
+                                {term}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+
+                        {searchSuggestions.length > 0 && (
+                          <div className="p-3">
+                            <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                              Öneriler
+                            </div>
+                            {searchSuggestions.map((suggestion, idx) => (
+                              <button
+                                key={idx}
+                                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-lg text-sm text-gray-700 flex items-center gap-2 transition-colors"
+                                onClick={() => {
+                                  updateFilter("searchQuery", suggestion.text);
+                                  setShowSuggestions(false);
+                                }}
+                              >
+                                <span className="flex-1">
+                                  {suggestion.text}
+                                </span>
+                                <span className="text-xs text-gray-400 capitalize bg-gray-100 px-2 py-0.5 rounded">
+                                  {suggestion.type}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                </div>
+              </div>
+
+              {/* Categories */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Kategori
+                </label>
+                <div className="space-y-1 max-h-64 overflow-y-auto">
+                  <div
+                    className={`cursor-pointer rounded-lg px-3 py-2 text-sm transition-colors ${
+                      !filters.categoryId
+                        ? "bg-gray-900 text-white"
+                        : "hover:bg-gray-100 text-gray-700"
+                    }`}
+                    onClick={() => updateFilter("categoryId", "")}
+                  >
+                    Tüm Kategoriler
+                  </div>
+                  {data.filterOptions.categories.map((cat) => (
+                    <CategoryFilter
+                      key={cat.id}
+                      category={cat}
+                      selectedId={filters.categoryId}
+                      onSelect={(id) => updateFilter("categoryId", id)}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Brand */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Marka
+                </label>
+                <select
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all appearance-none cursor-pointer"
+                  value={filters.brandId}
+                  onChange={(e) => updateFilter("brandId", e.target.value)}
+                >
+                  <option value="">Tüm Markalar</option>
+                  {data.filterOptions.brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name} ({brand.productCount})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Price Range */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  Fiyat Aralığı
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    placeholder="Min"
+                    value={filters.minPrice}
+                    onChange={(e) => updateFilter("minPrice", e.target.value)}
+                  />
+                  <input
+                    type="number"
+                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all"
+                    placeholder="Max"
+                    value={filters.maxPrice}
+                    onChange={(e) => updateFilter("maxPrice", e.target.value)}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-gray-500">
+                  Aralık: {data.filterOptions.minPrice}₺ -{" "}
+                  {data.filterOptions.maxPrice}₺
+                </p>
+              </div>
+
+              {/* In Stock */}
+              <div>
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
+                    checked={filters.inStock}
+                    onChange={(e) => updateFilter("inStock", e.target.checked)}
+                  />
+                  <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
+                    Sadece stokta olanlar
+                  </span>
+                </label>
+              </div>
+
+              {/* Filter Buttons */}
+              <div className="space-y-2 pt-2 border-t border-gray-100">
+                <button
+                  onClick={applyFilters}
+                  className="w-full py-3 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
+                >
+                  Filtrele
+                </button>
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="w-full py-3 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Filtreleri Temizle
+                  </button>
+                )}
+              </div>
+            </div>
+          </aside>
+
+          {/* Products Grid */}
+          <main className="flex-1">
+            {/* Toolbar */}
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+              <div className="flex items-center gap-2">
+                {/* Mobile Filter Button */}
+                <button
+                  onClick={() => setShowFilters(true)}
+                  className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <FiFilter className="w-4 h-4" />
+                  Filtreler
+                  {hasActiveFilters && (
+                    <span className="w-2 h-2 bg-gray-900 rounded-full"></span>
+                  )}
+                </button>
+
+                {/* View Mode Toggle */}
+                <div className="hidden sm:flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-2 rounded-md transition-all ${
+                      viewMode === "grid"
+                        ? "bg-white shadow-sm text-gray-900"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                    title="Grid görünümü"
+                  >
+                    <FiGrid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`p-2 rounded-md transition-all ${
+                      viewMode === "list"
+                        ? "bg-white shadow-sm text-gray-900"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                    title="Liste görünümü"
+                  >
+                    <FiList className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Sort */}
+              <select
+                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all cursor-pointer"
+                value={filters.sortBy}
+                onChange={(e) => {
+                  const newFilters = { ...filters, sortBy: e.target.value };
+                  router.push(buildBrowserUrl(newFilters));
+                }}
+              >
+                <option value="name_asc">İsim (A-Z)</option>
+                <option value="name_desc">İsim (Z-A)</option>
+                <option value="price_asc">Fiyat (Düşük-Yüksek)</option>
+                <option value="price_desc">Fiyat (Yüksek-Düşük)</option>
+                <option value="newest">En Yeniler</option>
               </select>
             </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium">
-                Fiyat Aralığı
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  className="w-full rounded border p-2"
-                  placeholder="Min"
-                  value={filters.minPrice}
-                  onChange={(e) => updateFilter("minPrice", e.target.value)}
-                />
-                <input
-                  type="number"
-                  className="w-full rounded border p-2"
-                  placeholder="Max"
-                  value={filters.maxPrice}
-                  onChange={(e) => updateFilter("maxPrice", e.target.value)}
-                />
-              </div>
-              <p className="mt-1 text-xs text-gray-500">
-                {data.filterOptions.minPrice}₺ - {data.filterOptions.maxPrice}₺
-              </p>
-            </div>
-
-            <div>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={filters.inStock}
-                  onChange={(e) => updateFilter("inStock", e.target.checked)}
-                />
-                <span className="text-sm">Sadece stokta olanlar</span>
-              </label>
-            </div>
-
-            <div className="space-y-2">
-              <button
-                onClick={applyFilters}
-                className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-              >
-                Filtrele
-              </button>
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="w-full rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                >
-                  Temizle
-                </button>
-              )}
-            </div>
-          </div>
-        </aside>
-
-        {/* Ürünler */}
-        <main className="flex-1">
-          <div className="mb-4 flex items-center justify-between">
-            <p className="text-sm text-gray-600">
-              {data.totalCount} ürün bulundu
-            </p>
-            <select
-              className="rounded border p-2"
-              value={filters.sortBy}
-              onChange={(e) => {
-                const newFilters = { ...filters, sortBy: e.target.value };
-                router.push(buildBrowserUrl(newFilters));
-              }}
-            >
-              <option value="name_asc">İsim (A-Z)</option>
-              <option value="name_desc">İsim (Z-A)</option>
-              <option value="price_asc">Fiyat (Düşük-Yüksek)</option>
-              <option value="price_desc">Fiyat (Yüksek-Düşük)</option>
-              <option value="newest">En Yeniler</option>
-            </select>
-          </div>
-
-          <div
-            className={`${
-              viewMode === "grid"
-                ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-                : "flex flex-col gap-4"
-            }`}
-          >
+            {/* Products */}
             {data.products.length > 0 ? (
-              data.products.map((product) =>
-                viewMode === "grid" ? (
-                  <ProductCard key={product.id} {...product} />
-                ) : (
-                  <div
-                    key={product.id}
-                    className="flex gap-4 bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
-                  >
-                    <div className="relative w-32 h-32">
-                      <Image
-                        src={product.imageUrl || "/placeholder.png"}
-                        alt={product.name}
-                        fill
-                        className="object-cover rounded"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg mb-1">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-gray-500 mb-2">
-                        {product.categoryName}
-                      </p>
-                      <p className="text-2xl font-bold text-custom-red mb-2">
-                        {product.price} ₺
-                      </p>
-                      <a
-                        href={`/product/${product.slug}`}
-                        className="inline-block bg-custom-red text-white px-4 py-2 rounded hover:bg-red-700 transition"
-                      >
-                        Detayları Gör
-                      </a>
-                    </div>
-                  </div>
-                ),
-              )
+              <div
+                className={
+                  viewMode === "grid"
+                    ? "grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6"
+                    : "flex flex-col gap-4"
+                }
+              >
+                {data.products.map((product) =>
+                  viewMode === "grid" ? (
+                    <ModernProductCard
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      price={product.price}
+                      imageUrl={product.imageUrl}
+                      categoryName={product.categoryName}
+                    />
+                  ) : (
+                    <ModernProductCard
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      price={product.price}
+                      imageUrl={product.imageUrl}
+                      categoryName={product.categoryName}
+                    />
+                  ),
+                )}
+              </div>
             ) : (
-              <p className="col-span-3 text-center text-gray-500">
-                Filtrelere uygun ürün bulunamadı.
-              </p>
-            )}
-          </div>
-
-          {data.totalPages > 1 && (
-            <nav
-              className="mt-8 flex justify-center gap-2"
-              aria-label="Pagination"
-            >
-              <button
-                onClick={() => changePage(filters.page - 1)}
-                disabled={filters.page === 1}
-                className="rounded bg-gray-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300"
-              >
-                Önceki
-              </button>
-              {Array.from({ length: data.totalPages }, (_, i) => i + 1).map(
-                (page) => (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <FiSearch className="w-10 h-10 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Ürün Bulunamadı
+                </h3>
+                <p className="text-gray-500 max-w-md">
+                  Arama kriterlerinize uygun ürün bulunamadı. Filtreleri
+                  değiştirmeyi deneyin.
+                </p>
+                {hasActiveFilters && (
                   <button
-                    key={page}
-                    onClick={() => changePage(page)}
-                    className={`rounded px-4 py-2 ${
-                      page === filters.page
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 hover:bg-gray-300"
-                    }`}
+                    onClick={clearFilters}
+                    className="mt-6 px-6 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
                   >
-                    {page}
+                    Filtreleri Temizle
                   </button>
-                ),
-              )}
-              <button
-                onClick={() => changePage(filters.page + 1)}
-                disabled={filters.page === data.totalPages}
-                className="rounded bg-gray-200 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300"
+                )}
+              </div>
+            )}
+
+            {/* Pagination */}
+            {data.totalPages > 1 && (
+              <nav
+                className="mt-12 flex items-center justify-center gap-2"
+                aria-label="Pagination"
               >
-                Sonraki
-              </button>
-            </nav>
-          )}
-        </main>
+                <button
+                  onClick={() => changePage(filters.page - 1)}
+                  disabled={filters.page === 1}
+                  className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Önceki
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: data.totalPages }, (_, i) => i + 1)
+                    .filter((page) => {
+                      if (data.totalPages <= 7) return true;
+                      if (page === 1 || page === data.totalPages) return true;
+                      if (Math.abs(page - filters.page) <= 1) return true;
+                      return false;
+                    })
+                    .map((page, idx, arr) => {
+                      const showEllipsis = idx > 0 && page - arr[idx - 1] > 1;
+                      return (
+                        <div key={page} className="flex items-center">
+                          {showEllipsis && (
+                            <span className="px-2 text-gray-400">...</span>
+                          )}
+                          <button
+                            onClick={() => changePage(page)}
+                            className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                              page === filters.page
+                                ? "bg-gray-900 text-white"
+                                : "text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        </div>
+                      );
+                    })}
+                </div>
+
+                <button
+                  onClick={() => changePage(filters.page + 1)}
+                  disabled={filters.page === data.totalPages}
+                  className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Sonraki
+                </button>
+              </nav>
+            )}
+          </main>
+        </div>
       </div>
     </div>
   );

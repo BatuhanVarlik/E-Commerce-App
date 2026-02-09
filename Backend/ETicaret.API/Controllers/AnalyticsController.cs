@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ETicaret.API.Controllers;
 
+/// <summary>
+/// Admin Analytics Controller - Only for authenticated admins
+/// </summary>
 [Route("api/admin/analytics")]
 [ApiController]
 [Authorize(Roles = "Admin")]

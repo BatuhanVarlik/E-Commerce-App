@@ -35,6 +35,17 @@ public class AuthController : ControllerBase
         try
         {
             var result = await _authService.LoginAsync(request);
+            
+            // HTTP-Only cookie ile token'ı güvenli şekilde sakla
+            Response.Cookies.Append("auth_token", result.Token, new CookieOptions
+            {
+                HttpOnly = true,      // JavaScript erişemez (XSS koruması)
+                Secure = true,        // Sadece HTTPS üzerinden gönderilir
+                SameSite = SameSiteMode.Strict,  // CSRF koruması
+                Expires = DateTimeOffset.UtcNow.AddDays(7),
+                Path = "/"
+            });
+            
             return Ok(result);
         }
         catch (Exception ex)

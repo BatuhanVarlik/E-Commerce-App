@@ -74,6 +74,7 @@ public static class DependencyInjection
         services.AddScoped<IChatService, Services.ChatService>();
         services.AddScoped<IChatbotService, Services.ChatbotService>();
         services.AddScoped<IChatAgentService, Services.ChatAgentService>();
+        services.AddScoped<IAuditService, Services.AuditService>();
         services.AddTransient<Services.DataSeeder>();
 
         // Redis Configuration

@@ -51,6 +51,7 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // HTTP-only cookie için gerekli
 });
 
 // Request interceptor - Her istekte token ekle

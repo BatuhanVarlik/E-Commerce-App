@@ -2,6 +2,8 @@ using ETicaret.Infrastructure;
 using ETicaret.Infrastructure.Middleware;
 using Microsoft.OpenApi.Models;
 using DotNetEnv;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 // .env dosyasını yükle (Backend klasöründen)
 var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
@@ -24,6 +26,11 @@ builder.Services.AddControllers()
         // Case-insensitive deserialization
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
+
+// FluentValidation
+builder.Services.AddValidatorsFromAssemblyContaining<ETicaret.Application.Validators.Auth.RegisterRequestValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -63,10 +70,48 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = audience,
         IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secretKey))
     };
+    
+    // HTTP-Only cookie'den token okuma
+    options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            // Önce Authorization header'ı kontrol et
+            if (string.IsNullOrEmpty(context.Token))
+            {
+                // Header'da yoksa cookie'den oku
+                context.Token = context.Request.Cookies["auth_token"];
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddSwaggerGen(c =>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "E-Ticaret API",
+        Description = "E-Ticaret uygulaması için RESTful API. Bu API, ürün yönetimi, sipariş işlemleri, kullanıcı kimlik doğrulama ve ödeme entegrasyonu gibi tüm e-ticaret işlemlerini destekler.",
+        Contact = new OpenApiContact
+        {
+            Name = "API Destek",
+            Email = "api@eticaret.com"
+        },
+        License = new OpenApiLicense
+        {
+            Name = "MIT License",
+            Url = new Uri("https://opensource.org/licenses/MIT")
+        }
+    });
+
+    c.EnableAnnotations();
+
+    // API gruplarını tanımla
+    c.TagActionsBy(api => new[] { api.GroupName ?? api.ActionDescriptor.RouteValues["controller"] });
+    c.DocInclusionPredicate((name, api) => true);
+
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: 'Bearer 12345abcdef'",
@@ -114,6 +159,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Global exception handler - en başta olmalı
+app.UseGlobalExceptionHandler();
 
 // CORS should be early in pipeline
 app.UseCors("AllowAll");

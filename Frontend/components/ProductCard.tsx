@@ -57,7 +57,13 @@ export default function ProductCard({
     }
     setAddingToCart(true);
     try {
-      await addToCart(id, 1);
+      await addToCart({
+        productId: id,
+        productName: name,
+        price: price,
+        quantity: 1,
+        imageUrl: imageUrl,
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
     } finally {

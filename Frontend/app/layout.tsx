@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { defaultMetadata, defaultViewport } from "@/lib/seo";
 import {
@@ -9,10 +9,14 @@ import {
   generateOrganizationSchema,
   generateWebSiteSchema,
 } from "@/lib/schema";
-import { MobileHeader, MobileBottomNav } from "@/components/mobile";
+import { MobileBottomNav } from "@/components/mobile";
 import { LiveChatWidget } from "@/components/chat/LiveChat";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = defaultMetadata;
 export const viewport: Viewport = defaultViewport;
@@ -29,26 +33,24 @@ export default function RootLayout({
   const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
   return (
-    <html lang="tr">
+    <html lang="tr" className={inter.variable}>
       <head>
         <JsonLd data={generateOrganizationSchema()} />
         <JsonLd data={generateWebSiteSchema()} />
       </head>
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body
+        className={`${inter.className} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <GoogleOAuthProvider clientId={googleClientId}>
           <AuthProvider>
             <CartProvider>
               <WishlistProvider>
-                {/* Desktop Navigation */}
-                <div className="hidden lg:block">
-                  <Navbar />
-                </div>
-
-                {/* Mobile Navigation */}
-                <MobileHeader />
+                {/* Modern Header - Works for both desktop and mobile */}
+                <Header />
 
                 {/* Main Content */}
-                <main className="lg:pt-0 pb-20 lg:pb-0">{children}</main>
+                <main className="pb-20 lg:pb-0">{children}</main>
 
                 {/* Mobile Bottom Navigation */}
                 <MobileBottomNav />

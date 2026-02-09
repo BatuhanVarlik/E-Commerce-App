@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
 
+  // Enable standalone output for Docker
+  output: "standalone",
+
   // Image optimization
   images: {
     remotePatterns: [

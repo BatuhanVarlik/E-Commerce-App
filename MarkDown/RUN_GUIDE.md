@@ -24,7 +24,7 @@ Bu komut, veritabanı konteynerini arka planda başlatır.
 
 ---
 
-## 2. Backend'i (API) Çalıştıra
+## 2. Backend'i (API) Çalıştırma
 
 Backend servisini başlatmak için aşağıdaki komutu kullanın. `dotnet watch`, kod değişikliklerini algılayıp sunucuyu otomatik olarak yeniden başlatır.
 

@@ -6,6 +6,7 @@ using ETicaret.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
+using AuditLogFilter = ETicaret.Application.DTOs.Security.AuditLogFilter;
 
 namespace ETicaret.Infrastructure.Services;
 

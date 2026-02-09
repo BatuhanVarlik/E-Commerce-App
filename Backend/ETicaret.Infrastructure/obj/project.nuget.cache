@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "w2screP/FG8=",
+  "dgSpecHash": "J+GHsMu+KD4=",
   "success": true,
-  "projectFilePath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/ETicaret.Infrastructure.csproj",
+  "projectFilePath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/ETicaret.Infrastructure.csproj",
   "expectedPackageFiles": [
+    "/Users/batu/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",
+    "/Users/batu/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "/Users/batu/.nuget/packages/google.apis/1.73.0/google.apis.1.73.0.nupkg.sha512",
     "/Users/batu/.nuget/packages/google.apis.auth/1.73.0/google.apis.auth.1.73.0.nupkg.sha512",
     "/Users/batu/.nuget/packages/google.apis.core/1.73.0/google.apis.core.1.73.0.nupkg.sha512",

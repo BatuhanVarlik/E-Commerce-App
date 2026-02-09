@@ -136,7 +136,7 @@ export default function CartPage() {
                 </p>
                 <button
                   onClick={() => removeFromCart(item.productId)}
-                  className="mt-2 text-sm text-gray-400 hover:text-custom-red transition-colors"
+                  className="mt-2 text-sm text-gray-500 hover:text-custom-red transition-colors"
                 >
                   <FaTrash />
                 </button>
@@ -246,7 +246,7 @@ export default function CartPage() {
             Ödemeye Geç
           </Link>
           <div className="mt-6 flex justify-center opacity-60">
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-gray-500">
               Güvenli Ödeme Altyapısı
             </span>
           </div>

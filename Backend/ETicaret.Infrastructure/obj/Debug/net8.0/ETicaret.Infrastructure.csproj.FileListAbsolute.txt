@@ -17,6 +17,12 @@
 /Users/batu/Desktop/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.pdb
 /Users/batu/Desktop/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.genruntimeconfig.cache
 /Users/batu/Desktop/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ref/ETicaret.Infrastructure.dll
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.csproj.AssemblyReference.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.AssemblyInfoInputs.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.AssemblyInfo.cs
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.csproj.CoreCompileInputs.cache
+/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.sourcelink.json
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/bin/Debug/net8.0/ETicaret.Infrastructure.deps.json
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/bin/Debug/net8.0/ETicaret.Infrastructure.runtimeconfig.json
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/bin/Debug/net8.0/ETicaret.Infrastructure.dll
@@ -25,15 +31,9 @@
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/bin/Debug/net8.0/ETicaret.Domain.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/bin/Debug/net8.0/ETicaret.Application.pdb
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/bin/Debug/net8.0/ETicaret.Domain.pdb
-/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.csproj.AssemblyReference.cache
-/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
-/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.AssemblyInfoInputs.cache
-/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.AssemblyInfo.cs
-/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.csproj.CoreCompileInputs.cache
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.AE83A0F3.Up2Date
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/refint/ETicaret.Infrastructure.dll
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.pdb
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.genruntimeconfig.cache
 /Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ref/ETicaret.Infrastructure.dll
-/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Infrastructure/obj/Debug/net8.0/ETicaret.Infrastructure.sourcelink.json

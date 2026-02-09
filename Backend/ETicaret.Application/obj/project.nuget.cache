@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Nk5cdwxx6SE=",
+  "dgSpecHash": "RH+008vyoPs=",
   "success": true,
-  "projectFilePath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj",
+  "projectFilePath": "/Users/batu/Desktop/Yazılım Öğrenme serüveni/E-ticaret/Backend/ETicaret.Application/ETicaret.Application.csproj",
   "expectedPackageFiles": [
+    "/Users/batu/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",
+    "/Users/batu/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "/Users/batu/.nuget/packages/iyzipay/2.1.67/iyzipay.2.1.67.nupkg.sha512",
     "/Users/batu/.nuget/packages/microsoft.aspnetcore.cryptography.internal/10.0.1/microsoft.aspnetcore.cryptography.internal.10.0.1.nupkg.sha512",
     "/Users/batu/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/10.0.1/microsoft.aspnetcore.cryptography.keyderivation.10.0.1.nupkg.sha512",

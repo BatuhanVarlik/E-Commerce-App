@@ -53,3 +53,36 @@ next-env.d.ts
 # Uploaded files
 Backend/ETicaret.API/wwwroot/uploads/**
 !Backend/ETicaret.API/wwwroot/uploads/**/.gitkeep
+
+# Production environment files
+.env
+.env.production
+!.env.example
+!.env.production.example
+
+# SSL certificates
+ssl/
+*.pem
+*.crt
+*.key
+
+# Backups
+backups/
+*.sql
+*.sql.gz
+*.tar.gz
+
+# Logs
+logs/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
